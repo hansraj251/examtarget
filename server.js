@@ -29,13 +29,6 @@ app.use(
         path.join(__dirname, "uploads")
     )
 );
-console.log(
-
-    "KEY:",
-
-    process.env.RAZORPAY_KEY_ID
-
-);
 
 const Razorpay =
 
