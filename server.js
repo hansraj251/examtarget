@@ -4180,62 +4180,46 @@ name,
     }
 
 );
-const transporter = nodemailer.createTransport({
-    host: "smtp-relay.brevo.com",
-    port: 587,
-    secure: false,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    }
-});
+
 const SibApiV3Sdk = require("sib-api-v3-sdk");
 
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 
 defaultClient.authentications["api-key"].apiKey =
 process.env.BREVO_API_KEY;
-
+console.log("BREVO KEY:", !!process.env.BREVO_API_KEY);
 const apiInstance =
 new SibApiV3Sdk.TransactionalEmailsApi();
-app.get("/test-mail",
 
-async(req,res)=>{
+app.get("/test-mail", async (req, res) => {
 
-try{
+    try {
 
-await apiInstance.sendTransacEmail({
+        await apiInstance.sendTransacEmail({
 
-    sender: {
-        name: "ExamTarget",
-        email: "examscore.help@gmail.com"
-    },
+            sender: {
+                name: "ExamTarget",
+                email: "examscore.help@gmail.com"
+            },
 
-    to: [{
-        email: email
-    }],
+            to: [{
+                email: "hans004333@gmail.com"
+            }],
 
-    subject: "Registration OTP",
+            subject: "Brevo Test",
 
-    textContent: `Your OTP is ${otp}`
+            textContent: "Brevo API working"
 
-});
+        });
 
-res.send(
-    "Mail Sent"
-);
+        res.send("Mail Sent");
 
-}
+    } catch (err) {
 
-catch(err){
+        console.log(err);
+        res.send("Error");
 
-console.log(err);
-
-res.send(
-    "Error"
-);
-
-}
+    }
 
 });
 app.post("/api/send-otp",
