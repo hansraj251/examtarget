@@ -1,0 +1,63 @@
+[
+  {
+    "section":"Reasoning",
+    "question":"2 + 2 = ?",
+    "optionA":"3",
+    "optionB":"4",
+    "optionC":"5",
+    "optionD":"6",
+    "answer":"B",
+    "paper_code":"SSC001"
+  },
+  {
+    "section":"Math",
+    "question":"5 × 5 = ?",
+    "optionA":"20",
+    "optionB":"25",
+    "optionC":"30",
+    "optionD":"35",
+    "answer":"B",
+    "paper_code":"SSC001"
+  },
+  {
+    "section":"English",
+    "question":"Choose the correct spelling.",
+    "optionA":"Recieve",
+    "optionB":"Receeve",
+    "optionC":"Receive",
+    "optionD":"Receve",
+    "answer":"C",
+    "paper_code":"SSC001"
+  },
+  {
+    "section":"GK",
+    "question":"Capital of India is?",
+    "optionA":"Mumbai",
+    "optionB":"Delhi",
+    "optionC":"Chennai",
+    "optionD":"Kolkata",
+    "answer":"B",
+    "paper_code":"SSC001"
+  },
+  {
+    "section":"Computer",
+    "question":"CPU stands for?",
+    "optionA":"Central Process Unit",
+    "optionB":"Central Processing Unit",
+    "optionC":"Computer Processing Unit",
+    "optionD":"Control Processing Unit",
+    "answer":"B",
+    "paper_code":"SSC001"
+  },
+  
+  {
+    "section":"Reasoning",
+    "question":"Study the table and answer the question.<br><br><table border='1'><tr><th>Student</th><th>Marks</th></tr><tr><td>Rahul</td><td>80</td></tr><tr><td>Aman</td><td>70</td></tr><tr><td>Sohan</td><td>90</td></tr></table><br><br>Who scored the highest marks?",
+    "optionA":"Rahul",
+    "optionB":"Aman",
+    "optionC":"Sohan",
+    "optionD":"None",
+    "answer":"C",
+    "paper_code":"SSC001"
+  }
+]

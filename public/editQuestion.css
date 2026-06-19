@@ -1,0 +1,19 @@
+#question{
+
+    width:100%;
+
+    max-width:90%;
+
+    min-height:50px;
+
+    padding:8px;
+
+    font-size:16px;
+
+    line-height:1;
+
+    box-sizing:border-box;
+
+    resize:vertical;
+
+}

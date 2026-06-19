@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [
+      ['$', '$'],
+      ['\\(', '\\)']
+    ],
+    displayMath: [
+      ['$$', '$$'],
+      ['\\[', '\\]']
+    ]
+  }
+};
+</script>
+
+<script
+id="MathJax-script"
+async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="admin.css">
+
+</head>
+
+<body>
+    
+
+<aside class="sidebar">
+
+    <div class="logo-section">
+
+        <img src="uploads/logo.png">
+
+        <h2>ExamTarget</h2>
+
+    </div>
+
+    <div class="sidebar-scroll">
+
+        <ul class="sidebar-menu">
+
+        <li id="menuDashboard"
+    onclick="showDashboard()">
+
+    📊 Dashboard
+
+</li>
+
+<li
+id="menuDashboardContent"
+onclick="showDashboardContent()"
+>
+
+📢 Home Dashboard
+
+</li>
+<li
+
+id="menuPremium"
+
+onclick="showPremiumAdmin()"
+
+>
+
+Premium Plans
+
+</li>
+
+<li id="menuAddExam"
+    onclick="showAddExam()">
+
+    ➕ Add Exam
+
+</li>
+
+
+<li id="menuManageLogos"
+
+    onclick="showLogoManager()">
+
+    🖼️ Manage Logos
+
+</li>
+
+<li id="menuAddPaper"
+    onclick="showAddPaper()">
+
+    📄 Add Paper
+
+</li>
+
+<li id="menuPaperGenerator"
+    onclick="showPaperGenerator()">
+
+    ⚡ Generate Papers
+
+</li>
+
+<li id="menuAddQuestion"
+    onclick="showAddQuestion()">
+
+    ❓ Add Question
+
+</li>
+
+<li id="menuAddTyping"
+    onclick="showAddTypingTest()">
+
+    ⌨️ Typing Tests
+
+</li>
+<li id="menuPayments"
+    onclick="showPayments()">
+
+    💳 Payment History
+
+</li>
+
+
+<li id="menuLogout"
+    onclick="logout()">
+
+    🚪 Logout
+
+</li>
+
+    </ul>
+
+</aside>
+
+<main class="main-content">
+
+    <div class="topbar">
+
+        <!-- <h1 id="pageTitle">
+
+            Dashboard
+
+        </h1> -->
+
+        <div class="profile-menu">
+
+            <button
+                class="profile-btn"
+                onclick="toggleAdminMenu()">
+
+                👤
+
+            </button>
+
+            <div
+                id="adminDropdown"
+                class="profile-dropdown">
+
+                <a
+href="home.html">
+
+User Panel
+
+</a>
+
+                <a
+                href="#"
+                onclick="logout()">
+
+                Logout
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="content-area">
+
+</div>
+
+<div
+id="confirmModal"
+class="confirm-modal"
+style="display:none;"
+>
+
+    <div class="confirm-box">
+
+        <h3 id="confirmTitle">
+
+            Confirm Action
+
+        </h3>
+
+        <p id="confirmMessage">
+
+        </p>
+
+        <div class="confirm-actions">
+
+            <button
+            class="cancel-btn"
+            onclick="closeConfirmModal()">
+
+                Cancel
+
+            </button>
+
+            <button
+            class="danger-btn"
+            onclick="runConfirmAction()">
+
+                Confirm
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+</main>
+<script src="addExam.js"></script>
+<script src="manageExams.js"></script>
+<script src="addPaper.js"></script>
+<script src="editPaper.js"></script>
+<script src="admin.js"></script>
+<script src="addQuestion.js"></script>
+<script src="assignQuestion.js"></script>
+<script src="viewQuestions.js"></script>
+<script src="importQuestions.js"></script>
+
+
+
+</body>
+</html>

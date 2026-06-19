@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Exam</title>
+</head>
+
+<body>
+
+    <h1>Add Exam</h1>
+
+    <input
+        type="text"
+        id="examName"
+        placeholder="Exam Name"
+    >
+    <input
+    id="examSubtitle"
+    placeholder="Exam Subtitle"
+>
+<br><br>
+
+
+
+<br><br>
+
+    <br><br>
+
+    <button onclick="addExam()">
+        Add Exam
+    </button>
+
+    <script src="addExam.js"></script>
+    <script src="manageExams.js"></script>
+
+</body>
+<hr>
+
+<h2>
+
+Manage Exams
+
+</h2>
+<button onclick="deleteSelectedExams()">
+    Delete
+</button>
+<br><br>
+
+<div id="exams">
+
+Loading...
+
+</div>
+
+</html>

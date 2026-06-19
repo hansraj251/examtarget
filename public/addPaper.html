@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Add Paper</title>
+</head>
+
+<body>
+
+    <h1>Add Paper</h1>
+
+    <select id="examSelect"></select>
+
+    <br><br>
+
+    <input
+        type="text"
+        id="paperName"
+        placeholder="Paper Name"
+    >
+
+    <br><br>
+
+    <button onclick="addPaper()">
+        Add Paper
+    </button>
+    <br><br>
+
+<hr>
+
+<h2>
+
+Paper Settings
+
+</h2>
+
+<select id="paperSelect">
+</select>
+
+<input
+id="positiveMarks"
+placeholder="Positive Marks"
+>
+
+<input
+id="negativeMarks"
+placeholder="Negative Marks"
+>
+
+<div id="sectionTimes">
+
+</div>
+
+<select id="navigation">
+
+<option value="free">
+Free Navigation
+</option>
+
+<br><br>
+
+<option value="locked">
+Locked Navigation
+</option>
+
+</select>
+<input
+id="duration"
+placeholder="Duration Minutes"
+>
+
+<br><br>
+
+<button
+onclick="savePaperSettings()"
+>
+
+Save Settings
+
+</button>
+
+<button
+onclick="deletePaper()"
+>
+
+Delete Paper
+
+</button>
+
+    <script src="addPaper.js"></script>
+<script src="editPaper.js"></script>
+
+</body>
+
+</html>

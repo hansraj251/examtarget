@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+    <link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ExamTarget</title>
+
+    <link rel="stylesheet" href="home.css">
+    <script>
+window.MathJax = {
+  tex: {
+    inlineMath: [
+      ['$', '$'],
+      ['\\(', '\\)']
+    ],
+    displayMath: [
+      ['$$', '$$'],
+      ['\\[', '\\]']
+    ]
+  }
+};
+</script>
+
+<script
+id="MathJax-script"
+async
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo-section">
+
+            <img src="uploads/logo.png"
+                 alt="Logo">
+
+            <h2>ExamTarget</h2>
+
+        </div>
+
+        <ul class="sidebar-menu">
+
+<li
+id="menuProfile"
+onclick="openProfile()">
+👤 Profile
+</li>
+
+<li
+id="menuDashboard"
+class="active"
+onclick="showDashboard()">
+🏠 Dashboard
+</li>
+
+<li
+id="menuTests"
+onclick="showTests()">
+📝 Test Series
+</li>
+<li id="menuLatestTests"
+onclick="showLatestTests()">
+
+    🎯 Latest Tests
+
+</li>
+
+<li
+id="menuAttempts"
+onclick="showMyAttempts()">
+📊 My Attempts
+</li>
+
+<li onclick="showBookmarks()">
+    ⭐ Bookmarks
+</li>
+
+<li
+id="menuTyping"
+onclick="showTypingPractice()">
+⌨️ Typing Practice
+</li>
+
+<li
+id="menuNotes"
+onclick="showNotes()">
+📝 My Notes
+</li>
+
+<li
+id="menuPremium"
+onclick="showPremiumPage()">
+⭐ Premium
+</li>
+
+<li id="authMenu"></li>
+
+</ul>
+
+    </aside>
+
+    <!-- Main Content -->
+
+    <main class="main-content">
+
+        <!-- Top Bar -->
+
+        <div class="topbar">
+
+            <h1 id="pageTitle">
+
+    
+
+</h1>
+<!-- <div class="search-box">
+
+    <span class="search-icon">
+        🔍
+    </span>
+
+    <input
+        type="text"
+        id="globalSearch"
+        placeholder="Search Exams, Papers, Questions..."
+        onkeyup="searchContent()"
+    >
+
+</div> -->
+
+            <div class="profile-menu">
+
+                <button
+                    class="profile-btn"
+                    onclick="toggleMenu()">
+
+                    👤
+
+                </button>
+
+                <div class="profile-dropdown">
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Dynamic Content -->
+
+        <div id="content-area"></div>
+        <div
+    id="searchResults"
+    style="display:none;"
+>
+</div>
+        
+    </main>
+    
+
+</div>
+
+<div id="editNoteModal" class="note-modal">
+
+
+    <div class="note-modal-content">
+
+        <h2>Edit Note</h2>
+
+        <input
+            type="text"
+            id="editNoteTitle"
+            placeholder="Title"
+        >
+
+        <textarea
+            id="editNoteText"
+            rows="12"
+        ></textarea>
+
+        <div class="note-modal-actions">
+
+            <button
+                onclick="closeEditNoteModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                onclick="updateNote()"
+            >
+                Update Note
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<div id="deleteNoteModal" class="note-modal">
+
+    <div class="note-modal-content delete-modal">
+
+        <h2>Delete Note</h2>
+
+        <p>
+
+            Are you sure you want to delete this note?
+
+        </p>
+
+        <div class="note-modal-actions">
+
+            <button
+                onclick="closeDeleteModal()"
+            >
+                Cancel
+            </button>
+
+            <button
+                class="danger-btn"
+                onclick="confirmDeleteNote()"
+            >
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<div
+id="leaderboardModal"
+class="modal"
+>
+
+<div class="modal-content">
+
+<h2>
+
+🏆 Leaderboard
+
+</h2>
+
+<div
+id="leaderboardContent"
+>
+
+Loading...
+
+</div>
+
+<br>
+
+<button
+class="test-btn"
+onclick="closeLeaderboard()"
+>
+
+Close
+
+</button>
+
+</div>
+
+</div>
+<div
+id="confirmModal"
+class="confirm-modal"
+style="display:none;"
+>
+
+    <div class="confirm-box">
+
+        <h3 id="confirmTitle"></h3>
+
+        <p id="confirmMessage"></p>
+
+        <div class="confirm-actions">
+
+    <button
+class="confirm-btn cancel-btn"
+onclick="closeConfirmModal()">
+    Cancel
+</button>
+
+<button
+class="confirm-btn confirm-btn-primary"
+onclick="runConfirmAction()">
+    Confirm
+</button>
+
+</div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="home.js"></script>
+<script src="db-test.js"></script>
+<script src="result.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</body>
+
+</html>
