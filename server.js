@@ -4180,41 +4180,44 @@ name,
     }
 
 );
-const transporter =
-nodemailer.createTransport({
-
-    service:"gmail",
-
-    auth:{
-
-        user:
-        "examscorehelp@gmail.com",
-
-        pass:
-        "igus rvem ucfx fawj"
-
+const transporter = nodemailer.createTransport({
+    host: "smtp-relay.brevo.com",
+    port: 587,
+    secure: false,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
-
 });
+const SibApiV3Sdk = require("sib-api-v3-sdk");
+
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+
+defaultClient.authentications["api-key"].apiKey =
+process.env.BREVO_API_KEY;
+
+const apiInstance =
+new SibApiV3Sdk.TransactionalEmailsApi();
 app.get("/test-mail",
 
 async(req,res)=>{
 
 try{
 
-await transporter.sendMail({
+await apiInstance.sendTransacEmail({
 
-    from:
-    "Examtarget",
+    sender: {
+        name: "ExamTarget",
+        email: "examscorehelp@gmail.com"
+    },
 
-    to:
-    "hans004333@gmail.com",
+    to: [{
+        email: email
+    }],
 
-    subject:
-    "Login OTP",
+    subject: "Registration OTP",
 
-    text:
-    "Email system working"
+    textContent: `Your OTP is ${otp}`
 
 });
 
