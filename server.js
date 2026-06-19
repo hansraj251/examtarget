@@ -4208,7 +4208,7 @@ await apiInstance.sendTransacEmail({
 
     sender: {
         name: "ExamTarget",
-        email: "examscorehelp@gmail.com"
+        email: "examscore.help@gmail.com"
     },
 
     to: [{
@@ -4276,15 +4276,20 @@ password;
 
 try{
 
-await transporter.sendMail({
+await apiInstance.sendTransacEmail({
 
-    from:"ExamTarget",
+    sender: {
+        name: "ExamTarget",
+        email: "examscore.help@gmail.com"
+    },
 
-    to:email,
+    to: [{
+        email: email
+    }],
 
-    subject:"Registration OTP",
+    subject: "Registration OTP",
 
-    text:`Your OTP is ${otp}`
+    textContent: `Your OTP is ${otp}`
 
 });
 
