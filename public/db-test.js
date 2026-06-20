@@ -638,6 +638,28 @@ function saveAndNext(){
 
         .section;
 
+       const nextSection =
+
+questions[currentQuestion + 1]
+
+?.section;
+ if(
+    paperSettings.section_navigation === "locked" &&
+    oldSection !== nextSection
+){
+
+    const proceed = confirm(
+        "⚠️ You are moving to the next section. After proceeding, you will not be able to return to the previous section. Continue?"
+    );
+
+    if(!proceed){
+
+        return;
+
+    }
+
+}
+
         currentQuestion++;
 
         const newSection =
@@ -777,6 +799,39 @@ function markForReview(){
         questions.length - 1
     ){
 
+        const oldSection =
+
+questions[currentQuestion]
+
+.section;
+
+const nextSection =
+
+questions[currentQuestion + 1]
+
+?.section;
+
+if(
+
+    paperSettings.section_navigation === "locked" &&
+
+    oldSection !== nextSection
+
+){
+
+    const proceed = confirm(
+
+        "⚠️ You are moving to the next section. After proceeding, you will not be able to return to the previous section. Continue?"
+
+    );
+
+    if(!proceed){
+
+        return;
+
+    }
+
+}
         currentQuestion++;
 
         loadQuestion();
