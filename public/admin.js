@@ -257,6 +257,17 @@ style="cursor:pointer;">
     </p>
 
 </div>
+<div
+class="stat-card"
+onclick="showUsers()"
+style="cursor:pointer;"
+>
+
+    <h2>${data.premiumUsers || 0}</h2>
+
+    <p>Premium Users</p>
+
+</div>
 
     </div>
 
@@ -4137,5 +4148,76 @@ function downloadBackup(){
         "/api/download-backup",
         "_blank"
     );
+
+}
+function exportUsers(){
+
+    window.open(
+        "/api/export-users",
+        "_blank"
+    );
+
+}
+
+function exportPayments(){
+
+    window.open(
+        "/api/export-payments",
+        "_blank"
+    );
+
+}
+function showSiteStats(){
+
+    fetch("/api/admin-stats")
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        document.getElementById(
+            "content-area"
+        ).innerHTML = `
+
+        <h2>📈 Site Statistics</h2>
+
+        <div style="
+            display:grid;
+            grid-template-columns:
+            repeat(auto-fit,minmax(220px,1fr));
+            gap:15px;
+            margin-top:20px;
+        ">
+
+            <div class="stat-card">
+                <h3>Total Users</h3>
+                <h1>${data.totalUsers}</h1>
+            </div>
+
+            <div class="stat-card">
+                <h3>Premium Users</h3>
+                <h1>${data.premiumUsers}</h1>
+            </div>
+
+            <div class="stat-card">
+                <h3>Free Users</h3>
+                <h1>${data.freeUsers}</h1>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Payments</h3>
+                <h1>${data.totalPayments}</h1>
+            </div>
+
+            <div class="stat-card">
+                <h3>Revenue</h3>
+                <h1>₹${data.revenue}</h1>
+            </div>
+
+        </div>
+
+        `;
+
+    });
 
 }

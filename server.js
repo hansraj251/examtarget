@@ -2458,7 +2458,14 @@ app.get(
 )
 FROM payments
 WHERE status='success'
-) AS revenue
+) AS revenue,
+ (SELECT COUNT(*)
+
+FROM users
+
+WHERE subscription_type='premium'
+
+) AS premiumUsers
 
             `,
 
@@ -8825,6 +8832,136 @@ app.get(
 
     }
 );
+app.get(
+    "/api/export-users",
+    adminOnly,
+    (req,res)=>{
+
+        db.all(
+
+            `
+            SELECT
+            id,
+            name,
+            email,
+            role,
+            subscription_type,
+            premium_expiry
+            FROM users
+            ORDER BY id DESC
+            `,
+
+            [],
+
+            (err,rows)=>{
+
+                if(err){
+
+                    return res
+                    .status(500)
+                    .send("Error");
+
+                }
+
+                let csv =
+                "ID,Name,Email,Role,Subscription Type,Premium Expiry\n";
+
+                rows.forEach(row=>{
+
+                    csv +=
+                    `${row.id},"${row.name}","${row.email}","${row.role}","${row.subscription_type}","${row.premium_expiry}"\n`;
+
+                });
+
+                res.setHeader(
+                    "Content-Type",
+                    "text/csv"
+                );
+
+                res.setHeader(
+                    "Content-Disposition",
+                    `attachment; filename=users_${Date.now()}.csv`
+                );
+
+                res.send(csv);
+
+            }
+
+        );
+
+    }
+);
+app.get(
+    "/api/export-payments",
+    adminOnly,
+    (req,res)=>{
+
+        db.all(
+
+            `
+            SELECT *
+            FROM payments
+            ORDER BY id DESC
+            `,
+
+            [],
+
+            (err,rows)=>{
+
+                if(err){
+
+                    return res
+                    .status(500)
+                    .send("Error");
+
+                }
+
+                if(rows.length === 0){
+
+                    return res.send(
+                        "No Payments Found"
+                    );
+
+                }
+
+                const headers =
+                Object.keys(rows[0]);
+
+                let csv =
+                headers.join(",") + "\n";
+
+                rows.forEach(row=>{
+
+                    csv +=
+                    headers
+                    .map(h =>
+                        `"${row[h] ?? ""}"`
+                    )
+                    .join(",")
+                    + "\n";
+
+                });
+
+                res.setHeader(
+                    "Content-Type",
+                    "text/csv"
+                );
+
+                res.setHeader(
+                    "Content-Disposition",
+                    `attachment; filename=payments_${Date.now()}.csv`
+                );
+
+                res.send(csv);
+
+            }
+
+        );
+
+    }
+);
+
+
 
 const PORT = process.env.PORT || 3000;
 
