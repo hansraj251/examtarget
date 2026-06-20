@@ -3824,15 +3824,23 @@ console.log(req.body);
 
             SELECT
 
-            id,
+id,
 
-            question,
+question,
 
-            section,
+section,
 
-            answer
+answer,
 
-            FROM questions
+optionA,
+
+optionB,
+
+optionC,
+
+optionD
+
+FROM questions
 
             JOIN paper_questions
 
@@ -3843,7 +3851,7 @@ console.log(req.body);
             WHERE
 
             paper_questions.paper_id = ?
-
+            
             `,
 
             [paper_id],
@@ -3856,7 +3864,7 @@ console.log(req.body);
 
                 let review = [];
 
-                rows.forEach(q => {
+                rows.forEach((q,index) => {
 
                     const userAnswer =
 
@@ -3891,6 +3899,9 @@ console.log(req.body);
                     }
 
                     review.push({
+                        questionNo:
+
+                        index + 1,
 
                         section:
 
@@ -3899,6 +3910,18 @@ console.log(req.body);
                         question:
 
                         q.question,
+
+                        options: [
+
+    q.optionA,
+
+    q.optionB,
+
+    q.optionC,
+
+    q.optionD
+
+],
 
                         yourAnswer:
 

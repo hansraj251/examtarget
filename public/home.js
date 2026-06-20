@@ -3330,6 +3330,11 @@ localStorage.setItem(
 localStorage.removeItem(
     "questionStatus"
 );
+localStorage.removeItem(
+
+    "userAnswers"
+
+);
 
 console.log(
     "CLEARED QUESTION TIMES"
@@ -3525,6 +3530,35 @@ Question Palette
 
 </div>
 <div id="submitModal" class="modal">
+<div id="sectionModal" class="modal">
+
+    <div class="modal-content">
+
+        <h3>Section Change Warning</h3>
+
+        <p>
+            You are moving to the next section.
+            After proceeding, you will not be able
+            to return to the previous section.
+        </p>
+
+        <button
+            id="sectionContinueBtn"
+            class="test-btn submit-btn"
+        >
+            Continue
+        </button>
+
+        <button
+            class="test-btn"
+            onclick="closeSectionModal()"
+        >
+            Cancel
+        </button>
+
+    </div>
+
+</div>
 
     <div class="modal-content">
 
@@ -3564,12 +3598,39 @@ function closeSubmitModal(){
     ).style.display = "none";
 
 }
+function openSectionModal(callback){
+
+    document.getElementById(
+        "sectionModal"
+    ).style.display = "block";
+
+    document.getElementById(
+        "sectionContinueBtn"
+    ).onclick = function(){
+
+        closeSectionModal();
+
+        callback();
+
+    };
+
+}
+
+function closeSectionModal(){
+
+    document.getElementById(
+        "sectionModal"
+    ).style.display = "none";
+
+}
 
 function finalSubmitTest(){
+
 
     closeSubmitModal();
 
     submitTest();
+    
 
 }
 window.onclick = function(event){
@@ -3664,6 +3725,7 @@ onclick="ratePaper(5)"
     </h2>
 
     <div id="sectionAnalysis">
+    
 
     </div>
 
@@ -3673,11 +3735,41 @@ onclick="ratePaper(5)"
 
     </h2>
 
-    <div id="analysis">
+    <div id="analysis"></div>
+
+    <div id="reviewModal" class="modal"
+    style="display:none;">
+
+        <div class="modal-content">
+
+            <span
+
+            onclick="closeReviewModal()"
+
+            style="
+
+                float:right;
+
+                cursor:pointer;
+
+                font-size:24px;
+
+            ">
+
+                ×
+
+            </span>
+
+            <div id="reviewQuestionContent">
+
+            </div>
+
+        </div>
 
     </div>
 
-    `;
+`;
+    
 
     loadResult();
 

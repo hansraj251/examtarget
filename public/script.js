@@ -70,6 +70,7 @@ function loadQuestion(){
                 name="answer"
                 value="${option}"
                 ${checked}
+                onchange="saveAnswer()"
             >
             ${option}
         </label>
