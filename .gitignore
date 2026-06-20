@@ -7,3 +7,6 @@ upload
 
 database_backup.db
 backups/
+sessions.db
+
+*.db-journal
