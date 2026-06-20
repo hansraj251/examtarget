@@ -170,7 +170,6 @@ result.review.forEach(item => {
     groupedSections[item.section].push(item);
 
 });
-let reviewIndex = 0;
 
 Object.keys(groupedSections).forEach(section => {
 
@@ -199,7 +198,6 @@ Object.keys(groupedSections).forEach(section => {
     `;
 
     groupedSections[section].forEach((item,index) => {
-        const currentIndex = reviewIndex++;
          const sectionQuestionNo = index + 1;
 
         let cardColor = "#f8fafc";
@@ -278,7 +276,7 @@ else if(item.status === "Wrong"){
 </p>
 <button
 class="test-btn"
-onclick="reviewQuestion(${currentIndex})"
+onclick="reviewQuestion(${item.questionNo})"
 >
 Review Question
 </button>
@@ -492,10 +490,21 @@ localStorage.getItem(
 );
 
 }
-function reviewQuestion(index){
+function reviewQuestion(questionNo){
 
-    const item =
-    window.reviewData[index];
+     const item = window.reviewData.find(
+
+        q => q.questionNo === questionNo
+
+    );
+
+    if(!item){
+
+        console.log("Question not found");
+
+        return;
+
+    }
 
     let optionsHtml = "";
 
@@ -537,11 +546,9 @@ function reviewQuestion(index){
         "reviewQuestionContent"
     ).innerHTML = `
 
-        <h2>
-        Q${item.questionNo}
-        </h2>
-
-        <p>${item.question}</p>
+        <h3>
+        ${item.question}
+        </h3>
 
         ${optionsHtml}
 
