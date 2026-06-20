@@ -8962,7 +8962,148 @@ app.get(
 );
 
 
+app.post(
+    "/api/restore-backup",
+    adminOnly,
+    upload.single("backup"),
+    (req,res)=>{
 
+        try{
+
+            const dbPath =
+            process.env.RENDER
+            ? "/opt/render/project/src/data/database.db"
+            : "./database.db";
+
+            const backupPath =
+            dbPath +
+            ".before_restore_" +
+            Date.now();
+
+            fs.copyFileSync(
+                dbPath,
+                backupPath
+            );
+
+            fs.copyFileSync(
+                req.file.path,
+                dbPath
+            );
+
+            res.json({
+
+                success:true,
+
+                message:
+                "Database restored successfully. Restart server."
+
+            });
+
+        }
+
+        catch(err){
+
+            console.log(err);
+
+            res.json({
+
+                success:false,
+
+                message:
+                "Restore failed"
+
+            });
+
+        }
+
+    }
+);
+
+function createDailyBackup(){
+
+    try{
+
+        const dbPath =
+        process.env.RENDER
+        ? "/opt/render/project/src/data/database.db"
+        : "./database.db";
+
+        const backupDir =
+        process.env.RENDER
+        ? "/opt/render/project/src/data/backups"
+        : "./backups";
+
+        const date =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+        const backupFile =
+        `${backupDir}/database_${date}.db`;
+
+        if(!fs.existsSync(backupFile)){
+
+            fs.copyFileSync(
+                dbPath,
+                backupFile
+            );
+
+            console.log(
+                "Backup created:",
+                backupFile
+            );
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(
+            "Backup Error:",
+            err
+        );
+        const backups = fs
+.readdirSync(backupDir)
+.filter(file =>
+    file.startsWith("database_") &&
+    file.endsWith(".db")
+)
+.sort();
+
+if(backups.length > 30){
+
+    const filesToDelete =
+    backups.slice(
+        0,
+        backups.length - 30
+    );
+
+    filesToDelete.forEach(file => {
+
+        fs.unlinkSync(
+            `${backupDir}/${file}`
+        );
+
+        console.log(
+            "Deleted old backup:",
+            file
+        );
+
+    });
+
+}
+
+    }
+
+    
+
+}
+createDailyBackup();
+setInterval(
+    createDailyBackup,
+    24 * 60 * 60 * 1000
+);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
