@@ -2881,7 +2881,7 @@ function proceedPayment(days,amount){
 
         key:
 
-        "rzp_test_SxEdpv4kVwU42D",
+        "rzp_live_T3myUMUbb8LRQ9",
 
         amount:
 
