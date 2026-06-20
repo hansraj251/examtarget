@@ -4221,3 +4221,75 @@ function showSiteStats(){
     });
 
 }
+function showRestoreBackup(){
+
+    document.getElementById(
+        "content-area"
+    ).innerHTML = `
+
+    <h2>♻️ Restore Backup</h2>
+
+    <p>
+        Select a database backup (.db) file.
+    </p>
+
+    <input
+        type="file"
+        id="backupFile"
+        accept=".db"
+    >
+
+    <br><br>
+
+    <button
+        onclick="restoreBackup()"
+    >
+        Restore Backup
+    </button>
+
+    `;
+
+}
+async function restoreBackup(){
+
+    const file = document.getElementById(
+        "backupFile"
+    ).files[0];
+
+    if(!file){
+
+        alert(
+            "Please select a backup file"
+        );
+
+        return;
+
+    }
+
+    const formData =
+    new FormData();
+
+    formData.append(
+        "backup",
+        file
+    );
+
+    const res = await fetch(
+
+        "/api/restore-backup",
+
+        {
+            method:"POST",
+            body:formData
+        }
+
+    );
+
+    const data =
+    await res.json();
+
+    alert(
+        data.message
+    );
+
+}
