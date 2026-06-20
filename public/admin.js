@@ -4125,3 +4125,17 @@ async function uploadJsonQuestions(){
     }
 
 }
+function downloadBackup(){
+
+    window.location.href =
+    "/api/download-backup";
+
+}
+function downloadBackup(){
+
+    window.open(
+        "/api/download-backup",
+        "_blank"
+    );
+
+}

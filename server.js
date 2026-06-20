@@ -8805,6 +8805,26 @@ adminOnly,
     );
 
 });
+app.get(
+    "/api/download-backup",
+    adminOnly,
+    (req,res)=>{
+
+        const dbPath =
+        process.env.RENDER
+        ? "/opt/render/project/src/data/database.db"
+        : "./database.db";
+
+        const fileName =
+        `database_backup_${Date.now()}.db`;
+
+        res.download(
+            dbPath,
+            fileName
+        );
+
+    }
+);
 
 const PORT = process.env.PORT || 3000;
 

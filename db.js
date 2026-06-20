@@ -2,7 +2,9 @@
 const sqlite3 = require("sqlite3").verbose();
 
 const db = new sqlite3.Database(
-    "/opt/render/project/src/data/database.db",
+    process.env.RENDER
+    ? "/opt/render/project/src/data/database.db"
+    : "./database.db",
     err => {
 
         if(err){
