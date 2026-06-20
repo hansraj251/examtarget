@@ -133,9 +133,6 @@ if(
         "questionTimes"
     );
 
-    localStorage.removeItem(
-        "questionStatus"
-    );
 
     localStorage.removeItem(
         "newAttempt"
@@ -459,10 +456,6 @@ else{
     ).innerHTML = "";
 
 }
-console.log("OPTION A =", q.optionA);
-console.log("OPTION B =", q.optionB);
-console.log("OPTION C =", q.optionC);
-console.log("OPTION D =", q.optionD);
 
     let html = "";
 
@@ -482,6 +475,7 @@ console.log("OPTION D =", q.optionD);
 
     q.section;
     createPalette();
+    updatePalette();
     
 const labels = [
     "A",
@@ -509,6 +503,7 @@ q.options.forEach((option,index) => {
                 name="answer"
                 value="${option}"
                 ${checked}
+                onchange="saveAnswer()"
             >
 
             <b>${labels[index]}.</b>
@@ -564,7 +559,9 @@ else{
 }
 
 }
-function saveAnswer(){
+function saveAnswer(){console.log(
+    "SAVE ANSWER CALLED"
+);
 
     const selected =
 
@@ -617,6 +614,12 @@ localStorage.setItem(
         questionStatus
 
     )
+
+);console.log(
+
+    "STATUS SAVED",
+
+    questionStatus
 
 );
 
@@ -850,6 +853,7 @@ function submitTest(){ saveQuestionTime();
     localStorage.removeItem(
     "adminPreview"
 );
+
     
     window.onbeforeunload = null;
     localStorage.removeItem(
@@ -945,10 +949,9 @@ function submitTest(){ saveQuestionTime();
         "userAnswers"
 
     );
-
     localStorage.removeItem(
 
-        "questionStatus"
+    "questionStatus"
 
     );
 
@@ -992,7 +995,7 @@ function resetExamSession(){
     );
 
     localStorage.removeItem(
-        "questionStatus"
+    "questionStatus"
     );
 
     localStorage.removeItem(
@@ -1002,6 +1005,7 @@ function resetExamSession(){
     localStorage.removeItem(
         "sectionTimeLeft"
     );
+    
 
 }
 
