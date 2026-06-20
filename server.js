@@ -16,6 +16,17 @@ const express = require("express");
 const session = require(
     "express-session"
 );
+const SQLiteStore =
+
+require(
+
+    "connect-sqlite3"
+
+)(
+
+    session
+
+);
 const db = require("./db");
 const multer = require("multer");
 const XLSX = require("xlsx");
@@ -81,6 +92,16 @@ app.use(
 
     session({
 
+        store: new SQLiteStore({
+
+            db: "sessions.db",
+
+            dir: process.env.RENDER
+                ? "/opt/render/project/src/data"
+                : "./"
+
+        }),
+
         secret:
 
         "examscore-secret-key",
@@ -91,7 +112,15 @@ app.use(
 
         saveUninitialized:
 
-        false
+        false,
+
+        cookie: {
+
+            maxAge:
+
+            30 * 24 * 60 * 60 * 1000
+
+        }
 
     })
 
