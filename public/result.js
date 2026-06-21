@@ -311,14 +311,50 @@ ${item.question}
         <b>Correct Answer:</b>
         ${item.correctAnswer}
         </p>
+        <button
+class="report-btn"
+onclick="reportQuestion(${item.questionId})"
+>
+🚩 Report Question
+</button>
+        <button
+class="test-btn"
+onclick="getAISolution(${item.questionId})"
+>
+🤖 AI Explanation
+</button>
+
+<div
+id="aiSolutionBox"
+style="
+margin-top:15px;
+padding:15px;
+background:#f8fafc;
+border-radius:8px;
+display:none;
+"
+>
+</div>
 
     `;
 
     document.getElementById(
         "reviewModal"
     ).style.display = "block";
+    if(
+
+    window.MathJax &&
+
+    MathJax.typesetPromise
+
+){
+
+    MathJax.typesetPromise();
 
 }
+
+}
+
 function closeReviewModal(){
 
     document.getElementById(
@@ -326,6 +362,105 @@ function closeReviewModal(){
     ).style.display = "none";
 
 }
+async function getAISolution(questionId){
+
+    const box =
+
+    document.getElementById(
+        "aiSolutionBox"
+    );
+
+    box.style.display =
+    "block";
+
+    box.innerHTML =
+
+    "Generating AI Solution...";
+
+    try{
+
+        const res =
+
+        await fetch(
+
+            "/api/ai-solution/" +
+
+            questionId
+
+        );
+
+        if(!res.ok){
+
+    const data =
+    await res.json();
+
+    box.innerHTML =
+
+    `<div class="error-box">
+
+        ${data.error}
+
+    </div>`;
+
+    return;
+
+}
+
+        const data =
+
+        await res.json();
+
+        box.innerHTML =
+
+marked.parse(
+    data.solution
+);
+
+    }
+    catch(err){
+
+        box.innerHTML =
+
+        "Failed to generate solution";
+
+    }
+
+}
+function reportQuestion(questionId){
+
+    const reason = prompt(
+        "Reason?\n\n1. Wrong Answer Key\n2. Wrong Question\n3. Wrong Options\n4. Typo / Formatting Issue\n5. Image Not Loading\n6. Other"
+    );
+
+    if(!reason){
+        return;
+    }
+
+    fetch(
+        "/api/report-question",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                question_id: questionId,
+                reason: reason,
+                user_id: localStorage.getItem(
+                    "userId"
+                )
+            })
+        }
+    )
+    .then(res=>res.json())
+    .then(data=>{
+
+        alert(data.message);
+
+    });
+
+}
+
 function renderQuestionAnalysis(reviewData){
 
     let html = "";
@@ -473,6 +608,18 @@ document.getElementById(
     "analysis"
 
 ).innerHTML = html;
+
+if(
+
+    window.MathJax &&
+
+    MathJax.typesetPromise
+
+){
+
+    MathJax.typesetPromise();
+
+}
 
 }
 function filterQuestions(){

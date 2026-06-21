@@ -63,6 +63,25 @@ new Razorpay({
     process.env.RAZORPAY_KEY_SECRET
 
 });
+const {
+
+    GoogleGenerativeAI
+
+} = require(
+
+    "@google/generative-ai"
+
+);
+
+const genAI =
+
+new GoogleGenerativeAI(
+
+    process.env
+
+    .GEMINI_API_KEY
+
+);
 
 
 app.get("/api/questions", (req, res) => {
@@ -368,6 +387,304 @@ AND p.is_hidden = 0
     );
 
 });
+
+
+app.get(
+
+    "/api/ai-solution/:questionId",
+
+    async (req,res)=>{
+        if(
+
+    !req.session.userId
+
+){
+
+    return res.status(403).json({
+
+        error:
+        "Login required"
+
+    });
+
+}
+
+if(
+
+    req.session.subscription_type !==
+
+    "premium"
+
+){
+
+    return res.status(403).json({
+
+        error:
+        "AI Solution is available only for Premium users"
+
+    });
+
+}
+
+        try{
+
+            const questionId =
+
+            req.params.questionId;
+
+            db.get(
+
+                `
+                SELECT *
+                FROM questions
+                WHERE id = ?
+                `,
+
+                [questionId],
+
+                async (err,row)=>{
+
+                    if(err || !row){
+
+                        return res
+                        .status(404)
+                        .json({
+                            error:
+                            "Question not found"
+                        });
+
+                    }
+
+                    if(row.ai_solution){
+
+    return res.json({
+
+        solution:
+        row.ai_solution
+
+    });
+
+}
+
+                    const model =
+
+                    genAI.getGenerativeModel({
+
+                        model:
+                        "gemini-2.5-flash"
+
+                    });
+
+                    const prompt = `
+
+Solve this SSC exam question.
+
+Question:
+${row.question}
+
+Option A:
+${row.optionA}
+
+Option B:
+${row.optionB}
+
+Option C:
+${row.optionC}
+
+Option D:
+${row.optionD}
+
+Correct Answer:
+${row.answer}
+
+Give:
+
+1. Correct Answer
+2. Step by Step Solution
+3. Shortcut Method (if applicable)
+
+Rules:
+- Return Markdown only.
+- Do not use LaTeX.
+- Do not use mathematical notation like \boxed{}, $$, $begin:math:text$ $end:math:text$, $begin:math:display$ $end:math:display$.
+- Use simple text that SSC aspirants can read easily.
+- Keep the solution concise.
+- End with a separate line:
+Final Answer: Correct Option
+
+`;
+
+                    const result =
+
+await model.generateContent(
+    prompt
+);
+
+const solutionText =
+
+result.response.text();
+
+db.run(
+
+    `
+    UPDATE questions
+    SET ai_solution = ?
+    WHERE id = ?
+    `,
+
+    [
+        solutionText,
+        questionId
+    ]
+
+);
+
+res.json({
+
+    solution:
+    solutionText
+
+});
+
+                }
+
+            );
+
+        }
+        catch(err){
+
+            res.status(500).json({
+
+                error:
+                err.message
+
+            });
+
+        }
+
+    }
+
+);
+
+app.post(
+
+    "/api/report-question",
+
+    (req,res)=>{
+
+        const {
+            question_id,
+            user_id,
+            reason
+        } = req.body;
+
+        db.run(
+
+            `
+            INSERT INTO
+            question_reports
+            (
+                question_id,
+                user_id,
+                reason
+            )
+            VALUES(?,?,?)
+            `,
+
+            [
+                question_id,
+                user_id,
+                reason
+            ],
+
+            function(err){
+
+    if(err){
+
+        if(
+
+            err.message.includes(
+                "UNIQUE"
+            )
+
+        ){
+
+            return res.json({
+
+                message:
+                "You have already reported this question"
+
+            });
+
+        }
+
+        return res
+        .status(500)
+        .json({
+
+            message:
+            "Failed"
+
+        });
+
+    }
+
+    res.json({
+
+        message:
+        "Question reported successfully"
+
+    });
+
+}
+
+        );
+
+    }
+
+);
+app.get(
+
+    "/api/reported-questions",
+
+    (req,res)=>{
+
+        db.all(
+
+            `
+            SELECT
+                qr.question_id,
+                q.question,
+                q.answer,
+                COUNT(*) AS reports
+            FROM question_reports qr
+            JOIN questions q
+            ON q.id = qr.question_id
+            GROUP BY qr.question_id
+            ORDER BY reports DESC
+            `,
+
+            [],
+
+            (err,rows)=>{
+
+                if(err){
+
+                    return res
+                    .status(500)
+                    .json([]);
+
+                }
+
+                res.json(rows);
+
+            }
+
+        );
+
+    }
+
+);
 app.get(
 "/api/admin/papers/:examId",
 (req,res)=>{
@@ -2476,24 +2793,15 @@ app.get(
 
             (SELECT COUNT(*) FROM papers) AS papers,
             (SELECT COUNT(*) FROM questions) AS questions,
-(SELECT COUNT(*) FROM duplicate_questions) AS duplicates,
-           (SELECT COUNT(*) FROM attempts) AS attempts,
-           
+            (SELECT COUNT(*) FROM duplicate_questions) AS duplicates,
+            (SELECT COUNT(*) FROM attempts) AS attempts,
+           (SELECT COUNT(*) FROM question_reports) AS reports,
 
-(SELECT COALESCE(
-    SUM(amount),
-    0
-)
-FROM payments
-WHERE status='success'
-) AS revenue,
- (SELECT COUNT(*)
-
-FROM users
-
-WHERE subscription_type='premium'
-
-) AS premiumUsers
+            (SELECT COALESCE(SUM(amount), 0)
+            FROM payments
+            WHERE status='success') AS revenue,
+            (SELECT COUNT(*) FROM users
+            WHERE subscription_type='premium') AS premiumUsers
 
             `,
 
@@ -2627,6 +2935,8 @@ app.post(
             optionD = ?,
 
             answer = ?,
+
+            ai_solution = NULL,
 
             image_url = ?
 
@@ -4144,6 +4454,54 @@ app.get(
     }
 
 );
+
+    }
+
+);
+app.post(
+
+    "/api/resolve-report",
+
+    (req,res)=>{
+
+        const {
+            question_id
+        } = req.body;
+
+        db.run(
+
+            `
+            DELETE FROM
+            question_reports
+            WHERE
+            question_id = ?
+            `,
+
+            [question_id],
+
+            function(err){
+
+                if(err){
+
+                    return res
+                    .status(500)
+                    .json({
+                        message:
+                        "Failed"
+                    });
+
+                }
+
+                res.json({
+
+                    message:
+                    "Issue resolved"
+
+                });
+
+            }
+
+        );
 
     }
 
