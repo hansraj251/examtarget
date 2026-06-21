@@ -4,7 +4,7 @@ node_modules
 uploads
 upload
 
-
+database.db
 database_backup.db
 backups/
 sessions.db
