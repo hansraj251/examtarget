@@ -135,6 +135,11 @@ document.addEventListener("click",function(event){
 // =========================
 
 function showDashboard(){
+    setActiveMenu(
+
+        "menuDashboard"
+
+    );
     exitExamMode();
 
     fetch(
@@ -2392,41 +2397,105 @@ window.onload = function(){
 
     if(
 
+    localStorage.getItem(
+        "examCompleted"
+    ) === "yes"
+
+    &&
+
+    localStorage.getItem(
+        "resultData"
+    )
+
+){
+
+    showResult();
+
+}
+else if(
+
+    localStorage.getItem(
+        "examRunning"
+    ) === "yes"
+
+    &&
+
+    localStorage.getItem(
+        "examCompleted"
+    ) !== "yes"
+
+){
+
+    showTest(
+
         localStorage.getItem(
+            "paperId"
+        )
 
-            "examRunning"
+    );
 
-        ) === "yes"
+    initTest();
 
-        &&
+}
+else{
 
-        localStorage.getItem(
+    const activeMenu =
+localStorage.getItem(
+    "activeMenu"
+);
 
-            "examCompleted"
+if(activeMenu === "menuProfile"){
 
-        ) !== "yes"
+    openProfile();
 
-    ){
+}
 
-        showTest(
 
-            localStorage.getItem(
 
-                "paperId"
 
-            )
+else if(activeMenu === "menuTests"){
 
-        );
+    showTests();
 
-        initTest();
+}
+else if(activeMenu === "menuLatestTests"){
 
-    }
-    else{
+    showLatestTests();
 
-        showDashboard();
+}
+else if(activeMenu === "menuAttempts"){
 
-    }
+    showMyAttempts();
 
+}
+else if(activeMenu === "menuBookmarks"){
+
+    showBookmarks();
+
+}
+else if(activeMenu === "menuTyping"){
+
+    showTypingPractice();
+
+}
+else if(activeMenu === "menuNotes"){
+
+    showNotes();
+
+}
+else if(activeMenu === "menuPremium"){
+
+    showPremiumPage();
+
+}
+
+else{
+
+    showDashboard();
+
+}
+
+}
 }
 document.addEventListener(
 
@@ -3658,12 +3727,6 @@ function showResult(){
         "content-area"
     ).innerHTML = `
 
-    <h1>
-
-        Test Result
-
-    </h1>
-
     <h2 id="score"></h2>
 
     <h3 id="correct"></h3>
@@ -3672,9 +3735,7 @@ function showResult(){
 
     <h3 id="unattempted"></h3>
 
-    <hr>
-<hr>
-
+<br>
 <h2>
 Rate This Paper
 </h2>
@@ -3709,32 +3770,29 @@ onclick="ratePaper(5)"
 </div>
 
 <div id="ratingMessage"></div>
-
-<hr>
+<br>
     <button class="test-btn"
         onclick="reAttempt()">
-        Close
+        Close Result
     </button>
-
-    <hr>
-
-    <h2>
-
-        Section Wise Analysis
-
-    </h2>
+     <br>
+    <br>
 
     <div id="sectionAnalysis">
     
 
     </div>
-
-    <h2>
-
-        Question Analysis
-
-    </h2>
 <br>
+    <h2
+style="
+text-align:center;
+margin:20px 0;
+"
+>
+
+    Section Wise Analysis
+
+</h2>
     <select
 id="questionFilter"
 onchange="filterQuestions()"
@@ -3772,6 +3830,7 @@ Unattempted Only
 </option>
 
 </select>
+
 
     <div id="analysis"></div>
 
@@ -5014,36 +5073,15 @@ ${accuracy.toFixed(2)}%
 `;
 
 }
+
 function setActiveMenu(menuId){
+    localStorage.setItem(
 
-    document
-    .querySelectorAll(
-        ".sidebar li"
-    )
-    .forEach(item => {
+    "activeMenu",
 
-        item.classList.remove(
-            "active"
-        );
+    menuId
 
-    });
-
-    const menu =
-
-    document.getElementById(
-        menuId
-    );
-
-    if(menu){
-
-        menu.classList.add(
-            "active"
-        );
-
-    }
-
-}
-function setActiveMenu(menuId){
+);
 
     document
     .querySelectorAll(
@@ -5160,6 +5198,26 @@ function searchContent(){
 
 }
 function showBookmarks(){
+     setActiveMenu(
+
+        "menuBookmarks"
+
+    );
+     if(
+
+        !localStorage.getItem(
+
+            "userId"
+
+        )
+
+    ){
+
+        showLogin();
+
+        return;
+
+    }
 
     fetch("/api/bookmarks")
 
