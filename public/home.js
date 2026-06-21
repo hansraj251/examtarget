@@ -3734,6 +3734,44 @@ onclick="ratePaper(5)"
         Question Analysis
 
     </h2>
+<br>
+    <select
+id="questionFilter"
+onchange="filterQuestions()"
+style="
+width:250px;
+padding:10px;
+font-size:16px;
+border-radius:8px;
+margin-bottom:15px;
+"
+>
+
+<option value="All">
+
+All Questions
+
+</option>
+
+<option value="Correct">
+
+Correct Only
+
+</option>
+
+<option value="Wrong">
+
+Wrong Only
+
+</option>
+
+<option value="Unattempted">
+
+Unattempted Only
+
+</option>
+
+</select>
 
     <div id="analysis"></div>
 

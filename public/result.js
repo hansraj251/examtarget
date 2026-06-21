@@ -11,6 +11,8 @@ JSON.parse(
 
 );
 window.reviewData = result.review;
+window.filteredReviewData =
+result.review;
 
 if(!result){
 
@@ -156,279 +158,19 @@ margin-bottom:15px;
 </div>
 
 `;
-   let html = "";
-   const groupedSections = {};
+renderQuestionAnalysis(
 
-result.review.forEach(item => {
+    result.review
 
-    if(!groupedSections[item.section]){
+); 
 
-        groupedSections[item.section] = [];
-
-    }
-
-    groupedSections[item.section].push(item);
-
-});
-
-Object.keys(groupedSections).forEach(section => {
-
-    html += `
-
-    <h2
-
-    style="
-
-        margin-top:30px;
-
-        padding:10px;
-
-        background:#e5e7eb;
-
-        border-radius:8px;
-
-    ">
-
-        ${section}
-
-        (${groupedSections[section].length} Questions)
-
-    </h2>
-
-    `;
-
-    groupedSections[section].forEach((item,index) => {
-         const sectionQuestionNo = index + 1;
-
-        let cardColor = "#f8fafc";
-
-        if(item.status === "Correct"){
-
-            cardColor = "#dcfce7";
-
-        }
-
-        else if(item.status === "Wrong"){
-
-            cardColor = "#fee2e2";
-
-        }
-
-        else{
-
-            cardColor = "#fef9c3";
-
-        }
-        let statusIcon = "⚪";
-        
-
-if(item.status === "Correct"){
-
-    statusIcon = "✅";
-
-}
-else if(item.status === "Wrong"){
-
-    statusIcon = "❌";
-
-}
-
-        html += `
-        
-
-        <div
-        style="
-            background:${cardColor};
-            border:1px solid #ddd;
-            padding:15px;
-            margin-bottom:10px;
-            border-radius:8px;
-        "
-        >
-
-            <h3>
-
-            Q${sectionQuestionNo}. ${item.question}
-
-            </h3>
-
-            <p>
-                Your Answer:
-                ${item.yourAnswer}
-            </p>
-
-            <p>
-                Correct Answer:
-                ${item.correctAnswer}
-            </p>
-
-            <p>
-                ⏱ Time Spent:
-                <b>${item.timeSpent || 0} sec</b>
-            </p>
-
-            <p>
-
-    Status:
-
-    ${statusIcon} ${item.status}
-
-</p>
-<button
-class="test-btn"
-onclick="reviewQuestion(${item.questionNo})"
->
-Review Question
-</button>
-
-        </div>
-
-        `;
-
-    });
-
-});
-const sections = {};
-document.getElementById(
-
-    "analysis"
-
-).innerHTML = html; if (window.MathJax) {
+if (window.MathJax) {
 
     MathJax.typesetPromise();
 
 }
-result.review.forEach(
-
-    item => {
-
-        if(
-
-            !sections[
-                item.section
-            ]
-
-        ){
-
-            sections[
-                item.section
-            ] = {
-
-                correct:0,
-
-                wrong:0,
-
-                unattempted:0
-
-            };
-
-        }
-
-        if(
-
-            item.status ===
-
-            "Correct"
-
-        ){
-
-            sections[
-                item.section
-            ].correct++;
-
-        }
-
-        else if(
-
-            item.status ===
-
-            "Wrong"
-
-        ){
-
-            sections[
-                item.section
-            ].wrong++;
-
-        }
-
-        else{
-
-            sections[
-                item.section
-            ].unattempted++;
-
-        }
-
-    }
-
-);
-
-let sectionHtml = "";
-for(
-
-    let section
-
-    in
-
-    sections
-
-){
-
-    sectionHtml += `
-
-    <div
-    style="
-
-        border:1px solid #ddd;
-
-        padding:15px;
-
-        margin-bottom:10px;
-
-        border-radius:8px;
-
-    ">
-
-        <h3>
-
-            ${section}
-
-        </h3>
-
-        <p>
-
-            Correct :
-
-            ${sections[section].correct}
-
-        </p>
-
-        <p>
-
-            Wrong :
-
-            ${sections[section].wrong}
-
-        </p>
-
-        <p>
-
-            Unattempted :
-
-            ${sections[section].unattempted}
-
-        </p>
-
-    </div>
-
-    `;
 
 }
-document.getElementById(
-    "sectionAnalysis"
-).innerHTML =
-    summaryHtml + sectionHtml;}
 
 function reAttempt(){
 
@@ -546,9 +288,17 @@ function reviewQuestion(questionNo){
         "reviewQuestionContent"
     ).innerHTML = `
 
-        <h3>
-        ${item.question}
-        </h3>
+        <div
+style="
+text-align:justify;
+line-height:1.7;
+padding-left:15px;
+padding-right:25px;
+margin-bottom:15px;
+"
+>
+${item.question}
+</div>
 
         ${optionsHtml}
 
@@ -574,5 +324,181 @@ function closeReviewModal(){
     document.getElementById(
         "reviewModal"
     ).style.display = "none";
+
+}
+function renderQuestionAnalysis(reviewData){
+
+    let html = "";
+   const groupedSections = {};
+
+reviewData.forEach(item => {
+
+    if(!groupedSections[item.section]){
+
+        groupedSections[item.section] = [];
+
+    }
+
+    groupedSections[item.section].push(item);
+
+});
+
+Object.keys(groupedSections).forEach(section => {
+
+    html += `
+
+    <h2
+
+    style="
+
+        margin-top:30px;
+
+        padding:10px;
+
+        background:#e5e7eb;
+
+        border-radius:8px;
+
+    ">
+
+        ${section}
+
+        (${groupedSections[section].length} Questions)
+
+    </h2>
+
+    `;
+
+    groupedSections[section].forEach((item,index) => {
+         const sectionQuestionNo = index + 1;
+
+        let cardColor = "#f8fafc";
+
+        if(item.status === "Correct"){
+
+            cardColor = "#dcfce7";
+
+        }
+
+        else if(item.status === "Wrong"){
+
+            cardColor = "#fee2e2";
+
+        }
+
+        else{
+
+            cardColor = "#fef9c3";
+
+        }
+        let statusIcon = "⚪";
+        
+
+if(item.status === "Correct"){
+
+    statusIcon = "✅";
+
+}
+else if(item.status === "Wrong"){
+
+    statusIcon = "❌";
+
+}
+
+        html += `
+        
+
+        <div
+        style="
+            background:${cardColor};
+            border:1px solid #ddd;
+            padding:15px;
+            margin-bottom:10px;
+            border-radius:8px;
+        "
+        >
+
+            <h3
+style="
+text-align:justify;
+line-height:1.7;
+padding-left:15px;
+padding-right:15px;
+"
+>
+
+Q${sectionQuestionNo}. ${item.question}
+
+</h3>
+
+            <p>
+                Your Answer:
+                ${item.yourAnswer}
+            </p>
+
+            <p>
+                Correct Answer:
+                ${item.correctAnswer}
+            </p>
+
+            <p>
+                ⏱ Time Spent:
+                <b>${item.timeSpent || 0} sec</b>
+            </p>
+
+            <p>
+
+    Status:
+
+    ${statusIcon} ${item.status}
+
+</p>
+<button
+class="test-btn"
+onclick="reviewQuestion(${item.questionNo})"
+>
+Review Question
+</button>
+
+        </div>
+
+        `;
+
+    });
+
+});
+const sections = {};
+document.getElementById(
+
+    "analysis"
+
+).innerHTML = html;
+
+}
+function filterQuestions(){
+
+    const filter =
+    document.getElementById(
+        "questionFilter"
+    ).value;
+
+    let filtered =
+    window.reviewData;
+
+    if(filter !== "All"){
+
+        filtered =
+        window.reviewData.filter(
+
+            item =>
+            item.status === filter
+
+        );
+
+    }
+
+    renderQuestionAnalysis(
+    filtered
+);
 
 }
