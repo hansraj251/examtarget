@@ -33,13 +33,18 @@ const XLSX = require("xlsx");
 const app = express();
 
 app.use(express.json());
-
 app.use(
+
     "/uploads",
+
     express.static(
-        path.join(__dirname, "uploads")
+
+        "/opt/render/project/src/data/uploads"
+
     )
+
 );
+app.use(express.static("public"));
 
 const Razorpay =
 
@@ -59,12 +64,6 @@ new Razorpay({
 
 });
 
-
-app.use(express.static("public"));
-app.use(
-    "/uploads",
-    express.static("uploads")
-);
 
 app.get("/api/questions", (req, res) => {
   res.json(questions);
@@ -142,9 +141,9 @@ const storage = multer.diskStorage({
     ){
 
         cb(
-            null,
-            "uploads/"
-        );
+    null,
+    "/opt/render/project/src/data/uploads"
+);
 
     },
 
