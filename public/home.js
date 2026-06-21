@@ -4048,20 +4048,15 @@ ${note.title ? `<h3>${note.title}</h3>` : ""}
 
     <div class="note-actions">
 
-       <button
-class="edit-btn"
-id="edit-btn-${note.id}"
-onclick="editNote(${note.id})"
->
-👁️ See
-<button
-class="delete-btn single-delete-btn"
-onclick="deleteNote(${note.id})"
->
-🗑 Delete
-</button>
+    <button
+    class="edit-btn"
+    id="edit-btn-${note.id}"
+    onclick="editNote(${note.id})"
+    >
+    👁️ See
+    </button>
 
-    </div>
+</div>
 
 </div>
 
