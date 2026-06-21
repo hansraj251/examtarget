@@ -559,12 +559,36 @@ function showLatestTests(){
 
         let html = `
 
+
+<div style="margin-bottom:20px;">
+
+<select
+
+id="examFilter"
+
+onchange="filterTests()"
+
+class="filter-select"
+
+>
+
+<option value="">
+
+All Exams
+
+</option>
+
+</select>
+
+</div>
+
         <div
-        class="latest-tests-grid"
-        >
+id="testsContainer"
+class="latest-tests-grid"
+>
 
         `;
-
+window.latestTests = tests;
         tests.forEach(test=>{
 
            html += `
@@ -620,6 +644,38 @@ function showLatestTests(){
             "content-area"
         ).innerHTML = html;
 
+        fetch("/api/exams")
+
+.then(res => res.json())
+
+.then(exams => {
+
+    let options = `
+
+    <option value="">
+    All Exams
+    </option>
+
+    `;
+
+    exams.forEach(exam => {
+
+        options += `
+
+        <option value="${exam.id}">
+    ${exam.name}
+</option>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "examFilter"
+    ).innerHTML = options;
+
+});
+
     });
 
 }
@@ -632,11 +688,34 @@ function showFreeTests(){
     .then(tests => {
 
         let html = `
+        <div style="margin-bottom:20px;">
 
-        <div class="latest-tests-grid">
+<select
+
+id="examFilter"
+
+onchange="filterFreeTests()"
+
+class="filter-select"
+
+>
+
+<option value="">
+
+All Exams
+
+</option>
+
+</select>
+
+</div>
+        <div
+id="freeTestsGrid"
+class="latest-tests-grid"
+>
 
         `;
-
+window.freeTests = tests;
         tests.forEach(test => {
 
             html += `
@@ -665,6 +744,39 @@ function showFreeTests(){
         document.getElementById(
             "content-area"
         ).innerHTML = html;
+        fetch("/api/exams")
+
+.then(res => res.json())
+
+.then(exams => {
+
+    let options = `
+
+    <option value="">
+    All Exams
+    </option>
+
+    `;
+
+    exams.forEach(exam => {
+
+        options += `
+
+        <option value="${exam.id}">
+
+    ${exam.name}
+
+</option>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "examFilter"
+    ).innerHTML = options;
+
+});
 
     });
 
@@ -5523,6 +5635,126 @@ function runConfirmAction(){
     }
 
     closeConfirmModal();
+
+}
+function filterTests(){
+
+    const examId = document.getElementById(
+        "examFilter"
+    ).value;
+
+    let tests = window.latestTests;
+
+    if(examId){
+
+        tests = tests.filter(
+            test =>
+            String(test.exam_id) === examId
+        );
+
+    }
+
+    let html = "";
+
+    tests.forEach(test => {
+
+        html += `
+
+<div class="latest-test-card">
+
+    <span class="${
+    test.is_paid == 1
+    ? 'paid-badge'
+    : 'free-badge'
+    } paper-badge">
+
+    ${
+    test.is_paid == 1
+    ? 'PAID'
+    : 'FREE'
+    }
+
+    </span>
+
+    <h3>
+        ${test.name}
+    </h3>
+
+    <p class="paper-subtitle">
+        ${test.subtitle || ""}
+    </p>
+
+    <p>
+        🌐 ${test.language || "English"}
+    </p>
+
+    <button
+        class="test-btn"
+        onclick="startTest(${test.id})"
+    >
+        Start Test
+    </button>
+
+</div>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "testsContainer"
+    ).innerHTML = html;
+
+}
+function filterFreeTests(){
+
+    const examId = document.getElementById(
+        "examFilter"
+    ).value;
+
+    let tests = window.freeTests;
+
+    if(examId){
+
+        tests = tests.filter(
+            test =>
+            String(test.exam_id) === examId
+        );
+
+    }
+
+    let html = "";
+
+    tests.forEach(test => {
+
+        html += `
+
+        <div class="latest-test-card">
+
+            <h3>
+                ${test.name}
+            </h3>
+
+            <p>
+                ${test.subtitle || ""}
+            </p>
+
+            <button
+            class="test-btn"
+            onclick="startTest(${test.id})"
+            >
+            Start Test
+            </button>
+
+        </div>
+
+        `;
+
+    });
+
+    document.getElementById(
+        "freeTestsGrid"
+    ).innerHTML = html;
 
 }
 

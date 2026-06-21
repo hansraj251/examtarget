@@ -9081,14 +9081,15 @@ app.get(
 
             `
             SELECT
-                id,
-                name,
-                subtitle
-            FROM papers
-            WHERE
-                is_paid = 0
-                AND is_hidden = 0
-            ORDER BY id DESC
+    id,
+    exam_id,
+    name,
+    subtitle
+FROM papers
+WHERE
+    is_paid = 0
+    AND is_hidden = 0
+ORDER BY id DESC
             `,
 
             [],
