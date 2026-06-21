@@ -1856,6 +1856,11 @@ fetch("/api/profile",{
 }
 
 function showLogin(){
+     setActiveMenu(
+
+        "authMenu"
+
+    );
     exitExamMode();
 
     document.getElementById(
