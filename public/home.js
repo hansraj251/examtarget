@@ -281,6 +281,21 @@ rows.filter(
 }
 html += `
 
+<div class="free-tests-section">
+
+    <div
+    id="freeTestsContainer"
+    class="activity-grid"
+    >
+
+    </div>
+
+</div>
+
+`;
+
+html += `
+
 <div class="activity-section">
 
     <div
@@ -293,6 +308,7 @@ html += `
 </div>
 
 `;
+
         // Cards
 
         rows.forEach(row=>{
@@ -446,6 +462,40 @@ fetch(
 
 }
 
+fetch(
+    "/api/free-tests"
+)
+
+.then(res => res.json())
+
+.then(tests => {
+
+    let freeHtml = `
+
+<div
+
+class="activity-card free-test-card"
+
+onclick="showFreeTests()"
+
+>
+
+    <h2> Free Tests</h2>
+
+    <h2>${tests.length}</h2>
+
+    <p>Click to View All</p>
+
+</div>
+
+`;
+
+    document.getElementById(
+        "freeTestsContainer"
+    ).innerHTML = freeHtml;
+
+});
+
         setTimeout(()=>{
 
             new Swiper(
@@ -573,7 +623,52 @@ function showLatestTests(){
     });
 
 }
+function showFreeTests(){
 
+    fetch("/api/free-tests")
+
+    .then(res => res.json())
+
+    .then(tests => {
+
+        let html = `
+
+        <div class="latest-tests-grid">
+
+        `;
+
+        tests.forEach(test => {
+
+            html += `
+
+            <div class="latest-test-card">
+
+                <h3>${test.name}</h3>
+
+                <p>${test.subtitle || ""}</p>
+
+                <button
+                class="test-btn"
+                onclick="startTest(${test.id})"
+                >
+                Start Test
+                </button>
+
+            </div>
+
+            `;
+
+        });
+
+        html += `</div>`;
+
+        document.getElementById(
+            "content-area"
+        ).innerHTML = html;
+
+    });
+
+}
 function showMyAttempts(){
     setActiveMenu(
 

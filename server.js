@@ -9071,6 +9071,48 @@ app.post(
     }
 );
 
+app.get(
+
+    "/api/free-tests",
+
+    (req,res)=>{
+
+        db.all(
+
+            `
+            SELECT
+                id,
+                name,
+                subtitle
+            FROM papers
+            WHERE
+                is_paid = 0
+                AND is_hidden = 0
+            ORDER BY id DESC
+            `,
+
+            [],
+
+            (err,rows)=>{
+
+                if(err){
+
+                    return res
+                    .status(500)
+                    .json([]);
+
+                }
+
+                res.json(rows);
+
+            }
+
+        );
+
+    }
+
+);
+
 function createDailyBackup(){
 
     try{

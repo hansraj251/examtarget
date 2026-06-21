@@ -121,6 +121,83 @@ body{
     min-height:100vh;
 }
 
+.free-test-card{
+
+    cursor:pointer;
+
+    background:linear-gradient(
+
+        135deg,
+
+        #ff7a00,
+
+        #ff5e00
+
+    ) !important;
+
+    color:white !important;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    width:380px;
+
+    box-shadow:
+
+    0 10px 25px rgba(255,122,0,.35);
+
+    transition:.2s;
+
+}
+.free-test-card{
+
+    width:200px !important;
+    min-width:200px !important;
+    max-width:250px !important;
+
+}
+.free-tests-section{
+
+    margin-top:20px;
+
+}
+
+.free-test-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+
+    0 15px 35px rgba(255,122,0,.5);
+
+}
+
+.free-test-card h2,
+.free-test-card h3,
+.free-test-card p{
+
+    color:white;
+    margin:0;
+
+}
+
+.free-test-card h3{
+
+    font-size:42px;
+    font-weight:700;
+    margin:12px 0;
+
+}
+
+.free-test-card p{
+
+    opacity:.95;
+
+}
+
+
+
 /* Sidebar */
 
 .sidebar{
