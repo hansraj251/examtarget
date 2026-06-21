@@ -9508,50 +9508,49 @@ function createDailyBackup(){
 
         }
 
-    }
+        const backups = fs
+        .readdirSync(backupDir)
+        .filter(file =>
+            file.startsWith("database_") &&
+            file.endsWith(".db")
+        )
+        .sort();
 
+        if(backups.length > 30){
+
+            const filesToDelete =
+            backups.slice(
+                0,
+                backups.length - 30
+            );
+
+            filesToDelete.forEach(file => {
+
+                fs.unlinkSync(
+                    `${backupDir}/${file}`
+                );
+
+                console.log(
+                    "Deleted old backup:",
+                    file
+                );
+
+            });
+
+        }
+
+    }
     catch(err){
 
         console.log(
             "Backup Error:",
             err
         );
-        const backups = fs
-.readdirSync(backupDir)
-.filter(file =>
-    file.startsWith("database_") &&
-    file.endsWith(".db")
-)
-.sort();
-
-if(backups.length > 30){
-
-    const filesToDelete =
-    backups.slice(
-        0,
-        backups.length - 30
-    );
-
-    filesToDelete.forEach(file => {
-
-        fs.unlinkSync(
-            `${backupDir}/${file}`
-        );
-
-        console.log(
-            "Deleted old backup:",
-            file
-        );
-
-    });
-
-}
 
     }
 
-    
-
 }
+
 createDailyBackup();
 setInterval(
     createDailyBackup,
