@@ -237,6 +237,26 @@ style="cursor:pointer;"
 
 </div>
 
+<div
+
+class="stat-card clickable-card"
+
+onclick="showReportedQuestions()"
+
+style="cursor:pointer;"
+
+>
+
+    <h2>${data.reports || 0}</h2>
+
+    <p>
+
+        Reported Questions
+
+    </p>
+
+</div>
+
 
         <div class="stat-card"
 
@@ -311,6 +331,113 @@ function showAllExams(){
     `;
 
     loadExams();
+}
+function showReportedQuestions(){
+
+    fetch(
+        "/api/reported-questions"
+    )
+
+    .then(res => res.json())
+
+    .then(rows => {
+
+        let html = `
+
+        `;
+
+        rows.forEach(row => {
+
+            html += `
+
+            <div class="history-card">
+
+                <h3>
+                Question ID:
+                ${row.question_id}
+                </h3>
+
+                <p>
+                ${row.question}
+                </p>
+
+                <p>
+                <b>Answer:</b>
+                ${row.answer}
+                </p>
+
+                <p>
+                <b>Reports:</b>
+                ${row.reports}
+                </p>
+                <button
+class="test-btn"
+onclick="resolveReport(
+    ${row.question_id}
+)"
+>
+✅ Issue Resolved
+</button>
+
+            </div>
+
+            `;
+
+        });
+
+        document.getElementById(
+            "content-area"
+        ).innerHTML = html;
+
+    });
+
+}
+function resolveReport(questionId){
+
+    if(
+        !confirm(
+            "Mark issue as resolved?"
+        )
+    ){
+        return;
+    }
+
+    fetch(
+
+        "/api/resolve-report",
+
+        {
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":
+                "application/json"
+            },
+
+            body:JSON.stringify({
+
+                question_id:
+                questionId
+
+            })
+
+        }
+
+    )
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        alert(
+            data.message
+        );
+
+        showReportedQuestions();
+
+    });
+
 }
 function showAllQuestions(){
 
