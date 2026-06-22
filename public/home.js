@@ -510,13 +510,20 @@ onclick="showPreviousPapers()"
 
         setTimeout(()=>{
 
-            new Swiper(
+    const totalSlides =
 
-                ".mySwiper",
+    document.querySelectorAll(
+        ".swiper-slide"
+    ).length;
 
-                {
+    new Swiper(
 
-                    loop:true,
+        ".mySwiper",
+
+        {
+
+            loop:
+            totalSlides > 2,
 
                     autoplay:{
 
