@@ -713,8 +713,9 @@ function showMyAttempts(){
 
         let html = `
 
+<div class="attempts-grid">
 
-        `;
+`;
 
         if(data.length === 0){
 
@@ -795,13 +796,16 @@ View Result
 </button>
 
             </div>
-            
-
-            <br>
 
             `;
 
         });
+        html += `
+
+</div>
+
+`;
+        
 
         document.getElementById(
             "content-area"
