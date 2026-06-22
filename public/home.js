@@ -2745,8 +2745,10 @@ document.addEventListener(
         ){
 
             e.preventDefault();
+            
 
         }
+        
 
     }
 
@@ -4025,17 +4027,28 @@ onclick="ratePaper(5)"
     
 
     </div>
-<br>
-    <h2
+
+<select
+id="sectionFilter"
+onchange="filterQuestions()"
 style="
-text-align:center;
-margin:20px 0;
+width:250px;
+padding:10px;
+font-size:16px;
+border-radius:8px;
+margin-bottom:15px;
+margin-right:10px;
 "
 >
 
-    Section Wise Analysis
+<option value="All">
 
-</h2>
+All Sections
+
+</option>
+
+</select>
+
     <select
 id="questionFilter"
 onchange="filterQuestions()"

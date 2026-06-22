@@ -13,6 +13,34 @@ JSON.parse(
 window.reviewData = result.review;
 window.filteredReviewData =
 result.review;
+const sectionFilter =
+document.getElementById(
+    "sectionFilter"
+);
+
+const sections = [
+
+    ...new Set(
+
+        result.review.map(
+            q => q.section
+        )
+
+    )
+
+];
+
+sections.forEach(section => {
+
+    sectionFilter.innerHTML += `
+
+<option value="${section}">
+${section}
+</option>
+
+`;
+
+});
 
 if(!result){
 
@@ -629,13 +657,18 @@ function filterQuestions(){
         "questionFilter"
     ).value;
 
+    const section =
+    document.getElementById(
+        "sectionFilter"
+    ).value;
+
     let filtered =
     window.reviewData;
 
     if(filter !== "All"){
 
         filtered =
-        window.reviewData.filter(
+        filtered.filter(
 
             item =>
             item.status === filter
@@ -644,8 +677,20 @@ function filterQuestions(){
 
     }
 
+    if(section !== "All"){
+
+        filtered =
+        filtered.filter(
+
+            item =>
+            item.section === section
+
+        );
+
+    }
+
     renderQuestionAnalysis(
-    filtered
-);
+        filtered
+    );
 
 }
