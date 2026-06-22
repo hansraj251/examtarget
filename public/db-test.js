@@ -242,6 +242,23 @@ fetch(
 .then(settings => {
 
     paperSettings = settings;
+    if(
+
+    paperSettings.section_navigation ===
+
+    "locked"
+
+){
+
+    document.getElementById(
+
+        "submitSectionBtn"
+
+    ).style.display =
+
+    "inline-block";
+
+}
    
 
     return fetch(
@@ -540,7 +557,7 @@ if(
 ){
 
     btn.innerHTML =
-    "⭐ Bookmarked";
+    "Bookmarked";
 
     btn.classList.add(
         "bookmarked-btn"
@@ -550,7 +567,7 @@ if(
 else{
 
     btn.innerHTML =
-    "☆ Bookmark";
+    "Bookmark";
 
     btn.classList.remove(
         "bookmarked-btn"
@@ -837,7 +854,41 @@ if(
 }
         currentQuestion++;
 
-        loadQuestion();
+const newSection =
+
+questions[currentQuestion]
+.section;
+
+if(
+    oldSection !== newSection &&
+    paperSettings.show_section_timer ===
+    "section"
+){
+
+    clearInterval(
+        timerInterval
+    );
+
+    timeLeft =
+    sectionTimes[
+        newSection
+    ];
+
+    localStorage.setItem(
+        "sectionTimeLeft",
+        timeLeft
+    );
+
+    startTimer();
+
+}
+
+localStorage.setItem(
+    "currentQuestion",
+    currentQuestion
+);
+
+loadQuestion();
 
     }
     else{
@@ -845,6 +896,99 @@ if(
         openSubmitModal();
 
     }
+
+}
+function submitSection(){
+
+    const proceed = confirm(
+
+        "Submit current section?\n\n" +
+
+        "After proceeding you cannot return to this section."
+
+    );
+
+    if(!proceed){
+
+        return;
+
+    }
+
+    const currentSection =
+
+    questions[currentQuestion]
+    .section;
+
+    const lastQuestionIndex =
+
+    questions
+    .map((q,index)=>({
+        q,
+        index
+    }))
+    .filter(item =>
+
+        item.q.section ===
+        currentSection
+
+    )
+    .pop().index;
+
+    const nextQuestionIndex =
+
+    lastQuestionIndex + 1;
+
+    if(
+
+        nextQuestionIndex >=
+        questions.length
+
+    ){
+
+        openSubmitModal();
+
+        return;
+
+    }
+
+    currentQuestion =
+
+    nextQuestionIndex;
+
+    localStorage.setItem(
+
+        "currentQuestion",
+
+        currentQuestion
+
+    );
+if(
+    paperSettings.show_section_timer ===
+    "section"
+){
+
+    const nextSection =
+
+    questions[nextQuestionIndex]
+    .section;
+
+    timeLeft =
+
+    sectionTimes[
+        nextSection
+    ];
+
+    localStorage.setItem(
+
+        "sectionTimeLeft",
+
+        timeLeft
+
+    );
+
+}    
+
+    loadQuestion();
 
 }
 function submitTest(){ saveQuestionTime();
@@ -1328,7 +1472,7 @@ function toggleBookmark(){
         );
 
         btn.innerHTML =
-        "⭐ Bookmarked";
+        "Bookmarked";
 
         btn.classList.add(
             "bookmarked-btn"

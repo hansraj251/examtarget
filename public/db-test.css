@@ -177,3 +177,59 @@ body{
     line-height:1.5;
 
 }
+.exam-buttons{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    width:100%;
+
+}
+
+.exam-btn{
+
+    width:auto !important;
+
+    flex:none !important;
+
+}
+.testTopBar{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#fff;
+
+    padding:15px 20px;
+
+    border-radius:12px;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+
+    margin-bottom:15px;
+
+}
+
+#examTitle{
+
+    font-size:20px;
+
+    font-weight:700;
+
+}
+
+#timer{
+
+    margin:0;
+
+    color:#dc2626;
+
+}

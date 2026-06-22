@@ -3626,6 +3626,17 @@ localStorage.setItem(
         paperId
     )
 );
+localStorage.setItem(
+    "examName",
+    document.querySelector(".instructions-title")
+    ?.innerText || ""
+);
+
+localStorage.setItem(
+    "paperName",
+    document.querySelector(".paper-name-box")
+    ?.innerText || ""
+);
 
     localStorage.setItem(
         "examRunning",
@@ -3690,69 +3701,78 @@ function showTest(
         "content-area"
     ).innerHTML = `
 
+<div class="testTopBar">
+
+<div id="examTitle"></div>
+
+    <h2 id="timer">
+        Loading Timer...
+    </h2>
+
+</div>
 <div class="mainLayout">
 
 <div class="leftPanel">
 
-<h2 id="timer">
+<div class="exam-buttons">
 
-Loading Timer...
+    <button class="exam-btn prev-btn"
+    onclick="previousQuestion()">
+        Previous
+    </button>
 
-</h2>
+    <button class="exam-btn next-btn"
+    onclick="saveAndNext()">
+        Save & Next
+    </button>
+
+    <button class="exam-btn clear-btn"
+    onclick="clearResponse()">
+        Clear Response
+    </button>
+
+    <button class="exam-btn review-btn"
+    onclick="markForReview()">
+        Mark For Review & Next
+    </button>
+
+    <button
+    id="bookmarkBtn"
+    class="exam-btn"
+    onclick="toggleBookmark()">
+        Bookmark
+    </button>
+<button
+
+id="submitSectionBtn"
+
+class="exam-btn submit-btn"
+
+onclick="submitSection()"
+
+>
+
+Submit Section
+
+</button>
+    <button class="exam-btn submit-btn"
+    onclick="openSubmitModal()">
+        Submit Test
+    </button>
+
+</div>
 
 <div id="questionWrapper">
 
-<h2 id="question">
+    <h2 id="question">
+        Loading...
+    </h2>
 
-Loading...
-
-</h2>
-
-<div id="questionImage">
-
-</div>
+    <div id="questionImage"></div>
 
 </div>
 
 <div id="options"></div>
-
-<br>
-<div class="exam-buttons">
-
-    <button class="exam-btn prev-btn"
-onclick="previousQuestion()">
-    Previous
-</button>
-
-<button class="exam-btn next-btn"
-onclick="saveAndNext()">
-    Save & Next
-</button>
-
-<button class="exam-btn clear-btn"
-onclick="clearResponse()">
-    Clear Response
-</button>
-
-<button class="exam-btn review-btn"
-onclick="markForReview()">
-    Mark For Review & Next
-</button>
-
-<button
-id="bookmarkBtn"
-    class="exam-btn"
-    onclick="toggleBookmark()"
->
-⭐ Bookmark
-</button>
-
-<button class="exam-btn submit-btn"
-onclick="openSubmitModal()">
-    Submit Test
-</button>
-
-</div>
 
 </div>
 
@@ -3862,6 +3882,17 @@ Question Palette
 </div>
 
 `;
+document.getElementById(
+
+    "examTitle"
+
+).innerText =
+
+localStorage.getItem(
+
+    "examName"
+
+) || "";
 
 }
 function openSubmitModal(){
@@ -5583,7 +5614,7 @@ function toggleBookmark(){
         );
 
         btn.innerHTML =
-        "⭐ Bookmarked";
+        "Bookmarked";
 
         btn.classList.add(
             "bookmarked-btn"
