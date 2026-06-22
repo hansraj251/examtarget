@@ -1,4 +1,27 @@
 const path = require("path");
+process.on(
+    "unhandledRejection",
+    err => {
+
+        console.error(
+            "UNHANDLED REJECTION:",
+            err
+        );
+
+    }
+);
+
+process.on(
+    "uncaughtException",
+    err => {
+
+        console.error(
+            "UNCAUGHT EXCEPTION:",
+            err
+        );
+
+    }
+);
 const fs = require("fs");
 require("dotenv").config({
     path: __dirname + "/.env"
@@ -514,15 +537,38 @@ Final Answer: Correct Option
 
 `;
 
-                    const result =
+                    let solutionText;
 
-await model.generateContent(
-    prompt
-);
+try{
 
-const solutionText =
+    const result =
 
-result.response.text();
+    await model.generateContent(
+        prompt
+    );
+
+    solutionText =
+
+    result.response.text();
+
+}
+catch(err){
+
+    console.error(
+        "Gemini Error:",
+        err.message
+    );
+
+    return res
+    .status(429)
+    .json({
+
+        error:
+        "AI solution temporarily unavailable. Please try again later."
+
+    });
+
+}
 
 db.run(
 
