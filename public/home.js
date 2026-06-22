@@ -3816,7 +3816,7 @@ Submit Section
     </div>
     </div>
 
-
+<div id="paletteStats"></div>
 <h3 id="paletteTitle">
 
 Question Palette

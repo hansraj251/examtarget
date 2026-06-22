@@ -699,15 +699,26 @@ app.get(
 
             `
             SELECT
-                qr.question_id,
-                q.question,
-                q.answer,
-                COUNT(*) AS reports
-            FROM question_reports qr
-            JOIN questions q
-            ON q.id = qr.question_id
-            GROUP BY qr.question_id
-            ORDER BY reports DESC
+
+    qr.question_id,
+
+    q.question,
+
+    q.answer,
+
+    COUNT(*) AS reports,
+
+    GROUP_CONCAT(qr.reason) AS reasons
+
+FROM question_reports qr
+
+JOIN questions q
+
+ON q.id = qr.question_id
+
+GROUP BY qr.question_id
+
+ORDER BY reports DESC
             `,
 
             [],

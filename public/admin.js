@@ -347,6 +347,35 @@ function showReportedQuestions(){
         `;
 
         rows.forEach(row => {
+            const reasonCounts = {};
+
+(row.reasons || "")
+.split(",")
+
+.forEach(reason => {
+
+    reasonCounts[reason] =
+
+    (reasonCounts[reason] || 0) + 1;
+
+});
+
+let reasonsHtml = "";
+
+Object.entries(reasonCounts)
+.forEach(([reason,count]) => {
+
+    reasonsHtml += `
+
+    <p>
+
+        ${reason}: ${count}
+
+    </p>
+
+    `;
+
+});
 
             html += `
 
@@ -370,6 +399,19 @@ function showReportedQuestions(){
                 <b>Reports:</b>
                 ${row.reports}
                 </p>
+                <h4>
+Reason Summary
+</h4>
+
+${reasonsHtml}
+
+<button
+class="test-btn"
+onclick="editQuestion(${row.question_id})"
+>
+✏️ Edit Question
+</button>
+<br><br>
                 <button
 class="test-btn"
 onclick="resolveReport(
@@ -390,6 +432,7 @@ onclick="resolveReport(
         ).innerHTML = html;
 
     });
+    
 
 }
 function resolveReport(questionId){

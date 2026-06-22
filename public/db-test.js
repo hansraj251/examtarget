@@ -224,6 +224,7 @@ fetch(
 }
 
     createPalette();
+    updatePaletteStats();
 
     loadQuestion();
 
@@ -493,6 +494,7 @@ else{
     q.section;
     createPalette();
     updatePalette();
+    updatePaletteStats();
     
 const labels = [
     "A",
@@ -1502,4 +1504,37 @@ function saveQuestionTime(){
         "questionTimes",
         JSON.stringify(questionTimes)
     );
+}
+
+function updatePaletteStats(){
+
+    const total = questions.length;
+
+    const answered = Object.keys(
+        userAnswers
+    ).filter(id =>
+
+        userAnswers[id] !== null &&
+        userAnswers[id] !== ""
+
+    ).length;
+
+    document.getElementById(
+        "paletteStats"
+    ).innerHTML = `
+
+        <div style="
+            padding:10px;
+            margin-bottom:10px;
+            background:#f3f4f6;
+            border-radius:8px;
+            text-align:center;
+            font-weight:600;
+        ">
+            ${answered} / ${total}
+            Answered
+        </div>
+
+    `;
+
 }
