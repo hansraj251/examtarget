@@ -584,142 +584,6 @@ function showPreviousPapers(){
 
 }
 
-function showLatestTests(){
-
-    setActiveMenu(
-        "menuLatestTests"
-    );
-
-    fetch(
-        "/api/latest-tests"
-    )
-
-    .then(res=>res.json())
-
-    .then(tests=>{
-
-        let html = `
-
-
-<div style="margin-bottom:20px;">
-
-<select
-
-id="examFilter"
-
-onchange="filterTests()"
-
-class="filter-select"
-
->
-
-<option value="">
-
-All Exams
-
-</option>
-
-</select>
-
-</div>
-
-        <div
-id="testsContainer"
-class="latest-tests-grid"
->
-
-        `;
-window.latestTests = tests;
-        tests.forEach(test=>{
-
-           html += `
-
-<div class="latest-test-card">
-
-    <span class="${
-    test.is_paid == 1
-    ? 'paid-badge'
-    : 'free-badge'
-    } paper-badge">
-
-    ${
-    test.is_paid == 1
-    ? 'PAID'
-    : 'FREE'
-    }
-
-    </span>
-
-    <h3>
-        ${test.name}
-    </h3>
-
-    <p class="paper-subtitle">
-        ${test.subtitle || ""}
-    </p>
-
-    <p>
-        🌐 ${test.language || "English"}
-    </p>
-
-    <button
-        class="test-btn"
-        onclick="startTest(${test.id})"
-    >
-        Start Test
-    </button>
-
-</div>
-
-`;
-
-        });
-
-        html += `
-
-        </div>
-
-        `;
-
-        document.getElementById(
-            "content-area"
-        ).innerHTML = html;
-
-        fetch("/api/exams")
-
-.then(res => res.json())
-
-.then(exams => {
-
-    let options = `
-
-    <option value="">
-    All Exams
-    </option>
-
-    `;
-
-    exams.forEach(exam => {
-
-        options += `
-
-        <option value="${exam.id}">
-    ${exam.name}
-</option>
-
-        `;
-
-    });
-
-    document.getElementById(
-        "examFilter"
-    ).innerHTML = options;
-
-});
-
-    });
-
-}
 function showFreeTests(){
 
     fetch("/api/free-tests")
@@ -752,7 +616,7 @@ All Exams
 </div>
         <div
 id="freeTestsGrid"
-class="latest-tests-grid"
+class="free-tests-grid"
 >
 
         `;
@@ -2775,11 +2639,7 @@ else if(activeMenu === "menuTests"){
     showTests();
 
 }
-else if(activeMenu === "menuLatestTests"){
 
-    showLatestTests();
-
-}
 else if(activeMenu === "menuAttempts"){
 
     showMyAttempts();

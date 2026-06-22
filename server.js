@@ -7032,48 +7032,7 @@ app.post(
     }
 
 );
-app.get(
 
-    "/api/latest-tests",
-
-    (req,res)=>{
-
-        db.all(
-
-            `
-            SELECT *
-FROM papers
-
-WHERE is_hidden = 0
-
-ORDER BY id DESC
-
-LIMIT 40
-            `,
-
-            [],
-
-            (err,rows)=>{
-
-                if(err){
-
-                    console.log(err);
-
-                    return res.status(500).json({
-                        error:err.message
-                    });
-
-                }
-
-                res.json(rows);
-
-            }
-
-        );
-
-    }
-
-);
 app.get(
 
     "/api/dashboard-content",
