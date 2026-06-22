@@ -2634,15 +2634,29 @@ SELECT
 
 attempts.*,
 
-papers.name AS paper_name
+papers.name AS paper_name,
+
+exams.name AS exam_name,
+
+papers.positive_marks,
+
+COUNT(pq.question_id)
+AS total_questions
 
 FROM attempts
 
 JOIN papers
-
 ON attempts.paper_id = papers.id
 
+JOIN exams
+ON papers.exam_id = exams.id
+
+LEFT JOIN paper_questions pq
+ON pq.paper_id = papers.id
+
 WHERE attempts.user_id = ?
+
+GROUP BY attempts.id
 
 ORDER BY attempts.id DESC
 

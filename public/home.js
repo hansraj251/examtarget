@@ -417,46 +417,28 @@ fetch(
     });
 
     document.getElementById(
+    "activityContainer"
+).innerHTML =
 
-        "activityContainer"
+`
 
-    ).innerHTML =
+<div
+class="activity-card"
+onclick="showActivity()"
+style="cursor:pointer;"
+>
 
-    `
+    <h3>
+    ${totalAttempts}
+    </h3>
 
-    <div class="activity-card">
+    <p>
+    Total Attempts
+    </p>
 
-        <h3>
+</div>
 
-        ${totalAttempts}
-
-        </h3>
-
-        <p>
-
-        Total Attempts
-
-        </p>
-
-    </div>
-
-    <div class="activity-card">
-
-        <h3>
-
-        ${topScore}
-
-        </h3>
-
-        <p>
-
-        Top Score
-
-        </p>
-
-    </div>
-
-    `;
+`;
 
 });
 
@@ -5921,5 +5903,312 @@ attemptId
         showResult();
 
     });
+
+}
+
+function showActivity(){
+
+    const userId =
+    localStorage.getItem("userId");
+
+    fetch(
+        "/api/my-attempts/" + userId
+    )
+
+    .then(res => res.json())
+
+    .then(data => {
+        window.activityData = data;
+
+        const topScore =
+        Math.max(
+            ...data.map(
+                a => a.score || 0
+            ),
+            0
+        );
+
+        const avgScore =
+        data.length
+        ?
+        (
+            data.reduce(
+                (sum,a)=>
+                sum + (a.score || 0),
+                0
+            ) / data.length
+        ).toFixed(1)
+        : 0;
+        
+
+        let html = `
+
+<h2>
+📊 Performance
+</h2>
+<br>
+<select
+
+id="activityExamFilter"
+
+onchange="renderActivityGraph()"
+
+>
+
+<option value="All">
+
+All Exams
+
+</option>
+
+</select>
+
+<div
+
+id="activityGraphWrapper"
+
+style="
+
+overflow-x:auto;
+
+height:500px;
+
+"
+
+>
+
+<canvas
+
+id="scoreChart"
+
+style="
+
+height:350px;
+
+"
+
+></canvas>
+
+</div>
+
+<div class="history-card">
+
+<h3 id="activityTopScore">
+🏆 Top Score : ${topScore}
+</h3>
+
+<h3 id="activityBestAccuracy">
+🎯 Best Accuracy : 0%
+</h3>
+
+<h3 id="activityTotalAttempts">
+📝 Total Attempts : ${data.length}
+</h3>
+
+</div>
+
+`;
+
+        document.getElementById(
+            "content-area"
+        ).innerHTML = html;
+
+        const exams = [
+
+    ...new Set(
+        data.map(
+            a => a.exam_name
+        )
+    )
+
+];
+
+const filter =
+
+document.getElementById(
+    "activityExamFilter"
+);
+
+exams.forEach(exam => {
+
+    filter.innerHTML +=
+
+    `<option value="${exam}">
+        ${exam}
+    </option>`;
+
+});
+renderActivityGraph();
+
+    });
+
+}
+function renderActivityGraph(){
+
+    const exam =
+
+    document.getElementById(
+        "activityExamFilter"
+    ).value;
+
+    let filteredData =
+    window.activityData;
+
+    if(
+        exam !== "All"
+    ){
+
+        filteredData =
+        window.activityData.filter(
+            a =>
+            a.exam_name === exam
+        );
+
+    }
+    const topScore =
+
+Math.max(
+    ...filteredData.map(
+        a => a.score || 0
+    ),
+    0
+);
+const topAttempt =
+
+filteredData.find(
+    a => a.score === topScore
+);
+
+const maxMarks =
+
+topAttempt
+? (
+    (topAttempt.total_questions || 0) *
+    (topAttempt.positive_marks || 0)
+)
+: 0;
+const bestAccuracy =
+
+Math.max(
+
+    ...filteredData.map(a => {
+
+        const totalMarks =
+
+        (a.total_questions || 0) *
+
+        (a.positive_marks || 0);
+
+        return totalMarks
+        ? (a.score / totalMarks) * 100
+        : 0;
+
+    }),
+
+    0
+
+).toFixed(1);
+document.getElementById(
+    "activityBestAccuracy"
+).innerText =
+
+"🎯 Best Accuracy : " +
+
+bestAccuracy +
+
+"%";
+
+document.getElementById(
+    "activityTopScore"
+).innerText =
+
+    "🏆 Top Score : " +
+    topScore +
+    " / " +
+    maxMarks;
+
+document.getElementById(
+    "activityTotalAttempts"
+).innerText =
+
+    "📝 Total Attempts : " +
+    filteredData.length;
+
+    
+
+    const canvas =
+    document.getElementById(
+        "scoreChart"
+    );
+
+    canvas.width =
+
+    Math.max(
+        1000,
+        filteredData.length * 80
+    );
+
+    const labels =
+
+    filteredData.map(
+        (_,index) =>
+        "Attempt " +
+        (index + 1)
+    );
+
+    const scores =
+
+filteredData.map(a => {
+
+    const totalMarks =
+
+    (a.total_questions || 0) *
+
+    (a.positive_marks || 0);
+
+    return totalMarks
+    ? (
+        (a.score / totalMarks)
+        * 100
+    ).toFixed(1)
+    : 0;
+
+});
+
+    if(
+        window.scoreChartInstance
+    ){
+
+        window.scoreChartInstance.destroy();
+
+    }
+
+    window.scoreChartInstance =
+    new Chart(
+        canvas,
+        {
+            type:"line",
+
+            data:{
+                labels,
+                datasets:[{
+                    label:"Accuracy %",
+                    data:scores,
+                    tension:0.3
+                }]
+            },
+
+            options:{
+                responsive:true,
+                maintainAspectRatio:false,
+
+                scales:{
+                    y:{
+                        beginAtZero:true
+                    }
+                }
+            }
+        }
+    );
 
 }
