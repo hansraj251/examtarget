@@ -470,21 +470,51 @@ fetch(
 
 .then(tests => {
 
-    let freeHtml = `
+    const previousPapers = tests.filter(
+    test =>
+    test.name &&
+    test.name.includes(
+        "Previous"
+    )
+);
+
+const normalTests = tests.filter(
+    test =>
+    !test.name ||
+    !test.name.includes(
+        "Previous"
+    )
+);
+
+let freeHtml = `
 
 <div
-
-class="activity-card free-test-card"
-
-onclick="showFreeTests()"
-
+style="
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+"
 >
 
-    <h2> Free Tests</h2>
+<div class="activity-card dashboard-free-card"
+onclick="showFreeTests()"
+>
 
-    <h2>${tests.length}</h2>
+    <h2>🎓 Free Tests</h2>
+
+    <h2>${normalTests.length}</h2>
 
     <p>Click to View All</p>
+
+</div>
+
+<div class="activity-card dashboard-previous-card"
+onclick="showPreviousPapers()"
+>
+    <h2>🏛 Previous Papers</h2>
+    <h2>${previousPapers.length}</h2>
+    <p>Click to View All</p>
+</div>
 
 </div>
 
@@ -543,6 +573,17 @@ onclick="showFreeTests()"
     
 
 }
+function showPreviousPapers(){
+
+    localStorage.setItem(
+        "paperFilterMode",
+        "previous"
+    );
+
+    showTests(true);
+
+}
+
 function showLatestTests(){
 
     setActiveMenu(
@@ -1126,13 +1167,25 @@ function confirmDeleteNote(){
 // Tests
 // =========================
 
-function showTests(){
+function showTests(
+
+    keepPreviousFilter = false
+
+){
+
+    if(!keepPreviousFilter){
+
+        localStorage.removeItem(
+
+            "paperFilterMode"
+
+        );
+
+    }
     setActiveMenu(
-
         "menuTests"
-
     );
-
+    
     fetch("/api/exams")
 
     .then(res => res.json())
@@ -1248,6 +1301,29 @@ function loadPapers(examId){
 
 });
 
+let filteredPapers = papers;
+
+const mode =
+
+localStorage.getItem(
+    "paperFilterMode"
+);
+
+if(mode === "previous"){
+
+    filteredPapers =
+    papers.filter(
+
+        p =>
+        p.name &&
+        p.name.includes(
+            "Previous"
+        )
+
+    );
+
+}
+
 
         let html = `
 
@@ -1297,6 +1373,22 @@ Not Attempted
 </select>
 
 <select
+id="paperTypeFilter"
+class="paper-filter"
+onchange="filterPapers()"
+>
+
+<option value="all">
+All Papers
+</option>
+
+<option value="previous">
+Previous Papers
+</option>
+
+</select>
+
+<select
 id="subtitleFilter"
 class="paper-filter"
 onchange="filterPapers()"
@@ -1315,7 +1407,7 @@ All Series
 
 `;
 
-        papers.forEach(paper => {
+        filteredPapers.forEach(paper => {
 
             html += `
 
@@ -1450,6 +1542,17 @@ const subtitles = [
         document.getElementById(
             "content-area"
         ).innerHTML = html;
+
+        if(mode === "previous"){
+
+    document.getElementById(
+
+        "paperTypeFilter"
+
+    ).value = "previous";
+
+}
+
         const subtitleFilter =
 document.getElementById(
     "subtitleFilter"
@@ -2666,7 +2769,9 @@ if(activeMenu === "menuProfile"){
 
 
 else if(activeMenu === "menuTests"){
-
+    localStorage.removeItem(
+        "paperFilterMode"
+    );
     showTests();
 
 }
@@ -2890,7 +2995,7 @@ function showPremiumPage(){
 
                 <h1>
 
-                    ⭐ Premium Member
+                    👑 Premium Member
 
                 </h1>
 
@@ -2976,7 +3081,7 @@ function showPremiumPlans(){
 
                 <h1>
 
-                    🏆 Upgrade To Premium
+                    👑 Upgrade To Premium
 
                 </h1>
 
@@ -5824,6 +5929,11 @@ function filterPapers(){
         "subtitleFilter"
     )?.value || "All";
 
+    const paperType =
+    document.getElementById(
+    "paperTypeFilter"
+    )?.value || "all";
+
     document.querySelectorAll(
         ".test-box"
     ).forEach(card => {
@@ -5836,6 +5946,12 @@ function filterPapers(){
 
         const cardSubtitle =
         card.dataset.subtitle;
+
+        const title =
+
+        card.querySelector(
+             "h2"
+        ).innerText;
 
         const languageMatch =
 
@@ -5861,11 +5977,22 @@ function filterPapers(){
         subtitle === "All" ||
         cardSubtitle === subtitle;
 
+        const paperTypeMatch =
+
+        paperType === "all" ||
+        (paperType === "previous"
+            &&
+        title.includes(
+        "Previous"
+         )
+        );
+
         card.style.display =
 
         languageMatch &&
         attemptMatch &&
-        subtitleMatch
+        subtitleMatch &&
+        paperTypeMatch
 
         ? ""
 
