@@ -2653,7 +2653,7 @@ SELECT
 attempts.*,
 
 papers.name AS paper_name,
-
+papers.subtitle AS paper_subtitle,
 exams.name AS exam_name,
 
 papers.positive_marks,

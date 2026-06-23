@@ -630,11 +630,13 @@ function showMyAttempts(){
 
             <div class="test-box">
 
-                <h3>
+                <h3> 
+    ${attempt.paper_name}
+</h3>
 
-                    ${attempt.paper_name}
-
-                </h3>
+<p class="paper-subtitle">
+    ${attempt.paper_subtitle || ""}
+</p>
 
                 <p>
 
