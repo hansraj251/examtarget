@@ -996,9 +996,13 @@ function showTests(
 </div>
 
     <p class="tests">
- ${exam.total_papers} Total |
- ${exam.free_papers || 0} Free |
- ${exam.previous_papers || 0} Previous
+
+<b>Total:</b> ${exam.total_papers}<br>
+
+<b>Free:</b> ${exam.free_papers || 0}<br>
+
+<b>Previous:</b> ${exam.previous_papers || 0}
+
 </p>
 
     <button
