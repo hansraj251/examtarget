@@ -572,109 +572,17 @@ function showPreviousPapers(){
     showTests(true);
 
 }
-
 function showFreeTests(){
 
-    fetch("/api/free-tests")
+    localStorage.setItem(
+        "paperFilterMode",
+        "free"
+    );
 
-    .then(res => res.json())
-
-    .then(tests => {
-
-        let html = `
-        <div style="margin-bottom:20px;">
-
-<select
-
-id="examFilter"
-
-onchange="filterFreeTests()"
-
-class="filter-select"
-
->
-
-<option value="">
-
-All Exams
-
-</option>
-
-</select>
-
-</div>
-        <div
-id="freeTestsGrid"
-class="free-tests-grid"
->
-
-        `;
-window.freeTests = tests;
-        tests.forEach(test => {
-
-            html += `
-
-            <div class="latest-test-card">
-
-                <h3>${test.name}</h3>
-
-                <p>${test.subtitle || ""}</p>
-
-                <button
-                class="test-btn"
-                onclick="startTest(${test.id})"
-                >
-                Start Test
-                </button>
-
-            </div>
-
-            `;
-
-        });
-
-        html += `</div>`;
-
-        document.getElementById(
-            "content-area"
-        ).innerHTML = html;
-        fetch("/api/exams")
-
-.then(res => res.json())
-
-.then(exams => {
-
-    let options = `
-
-    <option value="">
-    All Exams
-    </option>
-
-    `;
-
-    exams.forEach(exam => {
-
-        options += `
-
-        <option value="${exam.id}">
-
-    ${exam.name}
-
-</option>
-
-        `;
-
-    });
-
-    document.getElementById(
-        "examFilter"
-    ).innerHTML = options;
-
-});
-
-    });
+    showTests(true);
 
 }
+
 function showMyAttempts(){
     setActiveMenu(
 
@@ -1180,6 +1088,14 @@ if(mode === "previous"){
     );
 
 }
+if(mode === "free"){
+
+    filteredPapers =
+    papers.filter(
+        p => p.is_paid == 0
+    );
+
+}
 
 
         let html = `
@@ -1241,6 +1157,10 @@ All Papers
 
 <option value="previous">
 Previous Papers
+</option>
+
+<option value="free">
+Free Tests
 </option>
 
 </select>
@@ -1407,6 +1327,13 @@ const subtitles = [
         "paperTypeFilter"
 
     ).value = "previous";
+
+}
+if(mode === "free"){
+
+    document.getElementById(
+        "paperTypeFilter"
+    ).value = "free";
 
 }
 
@@ -5782,10 +5709,29 @@ function filterPapers(){
         "subtitleFilter"
     )?.value || "All";
 
-    const paperType =
-    document.getElementById(
-    "paperTypeFilter"
-    )?.value || "all";
+    const paperTypeMatch =
+
+paperType === "all"
+
+||
+
+(
+    paperType === "previous"
+    &&
+    card.querySelector("h2")
+    ?.innerText
+    .includes("Previous")
+)
+
+||
+
+(
+    paperType === "free"
+    &&
+    card.querySelector(
+        ".free-badge"
+    )
+);
 
     document.querySelectorAll(
         ".test-box"
