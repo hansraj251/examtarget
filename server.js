@@ -297,7 +297,23 @@ app.get("/api/exams", (req, res) => {
         e.logo
     ) AS logo,
 
-    COUNT(p.id) AS total_papers
+    COUNT(p.id) AS total_papers,
+
+SUM(
+    CASE
+    WHEN p.is_paid = 0
+    THEN 1
+    ELSE 0
+    END
+) AS free_papers,
+
+SUM(
+    CASE
+    WHEN p.name LIKE '%Previous%'
+    THEN 1
+    ELSE 0
+    END
+) AS previous_papers
 
 FROM exams e
 

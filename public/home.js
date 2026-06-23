@@ -482,7 +482,7 @@ flex-wrap:wrap;
 onclick="showFreeTests()"
 >
 
-    <h2>🎓 Free Tests</h2>
+    <h2>📄 Free Tests</h2>
 
     <h2>${normalTests.length}</h2>
 
@@ -996,7 +996,9 @@ function showTests(
 </div>
 
     <p class="tests">
-    ${exam.total_papers}+ Tests
+ ${exam.total_papers} Total |
+ ${exam.free_papers || 0} Free |
+ ${exam.previous_papers || 0} Previous
 </p>
 
     <button
