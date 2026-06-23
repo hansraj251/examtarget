@@ -5748,30 +5748,7 @@ document.getElementById(
     "paperTypeFilter"
 )?.value || "all";
 
-    const paperTypeMatch =
-
-paperType === "all"
-
-||
-
-(
-    paperType === "previous"
-    &&
-    card.querySelector("h2")
-    ?.innerText
-    .includes("Previous")
-)
-
-||
-
-(
-    paperType === "free"
-    &&
-    card.querySelector(
-        ".free-badge"
-    )
-);
-
+    
     document.querySelectorAll(
         ".test-box"
     ).forEach(card => {
