@@ -455,22 +455,34 @@ if (window.MathJax) {
     if(q.image_url){
 
     document.getElementById(
-
         "questionImage"
-
     ).innerHTML =
 
     `
+    <img
 
+src="/uploads/${q.image_url}"
+
+style="
+
+max-width:200px;
+
+width:100%;
+
+height:auto;
+
+display:block;
+
+margin:10px 0;
+
+">
     `;
 
 }
 else{
 
     document.getElementById(
-
         "questionImage"
-
     ).innerHTML = "";
 
 }
