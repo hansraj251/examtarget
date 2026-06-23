@@ -444,21 +444,14 @@ style="cursor:pointer;"
 
 }
 
-fetch(
-    "/api/free-tests"
-)
+Promise.all([
+    fetch("/api/free-tests").then(r => r.json()),
+    fetch("/api/previous-papers").then(r => r.json())
+])
+.then(([tests, previousRows]) => {
 
-.then(res => res.json())
+    const previousPaperCount = previousRows.length;
 
-.then(tests => {
-
-    const previousPapers = tests.filter(
-    test =>
-    test.name &&
-    test.name.includes(
-        "Previous"
-    )
-);
 
 const normalTests = tests.filter(
     test =>
@@ -484,7 +477,7 @@ onclick="showFreeTests()"
 
     <h2>📄 Free Tests</h2>
 
-    <h2>${normalTests.length}</h2>
+    <h2>${tests.length}</h2>
 
     <p>Click to View All</p>
 
@@ -494,7 +487,7 @@ onclick="showFreeTests()"
 onclick="showPreviousPapers()"
 >
     <h2>🏛 Previous Papers</h2>
-    <h2>${previousPapers.length}</h2>
+    <h2>${previousPaperCount}</h2>
     <p>Click to View All</p>
 </div>
 

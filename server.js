@@ -325,6 +325,8 @@ LEFT JOIN papers p
 
 ON p.exam_id = e.id
 
+AND p.is_hidden = 0
+
 GROUP BY
 
 e.id,
@@ -9596,6 +9598,49 @@ function createDailyBackup(){
     }
 
 }
+
+app.get(
+
+    "/api/previous-papers",
+
+    (req,res)=>{
+
+        db.all(
+
+            `
+            SELECT
+                id,
+                exam_id,
+                name,
+                subtitle
+            FROM papers
+            WHERE
+                name LIKE '%Previous%'
+                AND is_hidden = 0
+            ORDER BY id DESC
+            `,
+
+            [],
+
+            (err,rows)=>{
+
+                if(err){
+
+                    return res
+                    .status(500)
+                    .json([]);
+
+                }
+
+                res.json(rows);
+
+            }
+
+        );
+
+    }
+
+);
 
 createDailyBackup();
 setInterval(
