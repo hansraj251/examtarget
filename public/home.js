@@ -1336,6 +1336,16 @@ if(mode === "free"){
     ).value = "free";
 
 }
+const paperTypeFilter =
+document.getElementById(
+    "paperTypeFilter"
+);
+
+if(paperTypeFilter){
+
+    paperTypeFilter.style.display = "none";
+
+}
 
         const subtitleFilter =
 document.getElementById(
