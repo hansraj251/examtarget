@@ -3796,6 +3796,25 @@ localStorage.getItem(
     "examName"
 
 ) || "";
+fetch("/api/paper-settings/" + paperId)
+.then(res => res.json())
+.then(data => {
+
+    if(data.section_navigation !== "locked"){
+
+        const btn = document.getElementById(
+            "submitSectionBtn"
+        );
+
+        if(btn){
+
+            btn.style.display = "none";
+
+        }
+
+    }
+
+});
 
 }
 function openSubmitModal(){
