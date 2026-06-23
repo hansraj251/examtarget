@@ -5724,6 +5724,10 @@ function filterPapers(){
     document.getElementById(
         "subtitleFilter"
     )?.value || "All";
+    const paperType =
+document.getElementById(
+    "paperTypeFilter"
+)?.value || "all";
 
     const paperTypeMatch =
 
