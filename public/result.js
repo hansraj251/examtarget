@@ -452,6 +452,11 @@ marked.parse(
         "Failed to generate solution";
 
     }
+    if (window.MathJax) {
+
+    MathJax.typesetPromise([box]);
+
+}
 
 }
 function reportQuestion(questionId){
