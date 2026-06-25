@@ -5789,13 +5789,17 @@ document.getElementById(
 
         const paperTypeMatch =
 
-        paperType === "all" ||
-        (paperType === "previous"
-            &&
-        title.includes(
-        "Previous"
-         )
-        );
+    paperType === "all" ||
+
+    (
+        paperType === "previous" &&
+        title.includes("Previous")
+    ) ||
+
+    (
+        paperType === "free" &&
+        !title.includes("Previous")
+    );
 
         card.style.display =
 
