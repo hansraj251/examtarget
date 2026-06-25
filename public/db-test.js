@@ -921,6 +921,7 @@ function submitSection(){
         "After proceeding you cannot return to this section."
 
     );
+    saveAnswer();
 
     if(!proceed){
 
