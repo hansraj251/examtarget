@@ -5614,17 +5614,39 @@ app.post(
 
                     ()=>{
 
-                        res.json({
+    req.session.subscription_type =
+    "premium";
 
-                            success:true,
+    req.session.premium_expiry =
+    expiry
+    .toISOString()
+    .split("T")[0];
 
-                            message:
+    req.session.save(err=>{
 
-                            "Premium Activated"
+        if(err){
 
-                        });
+            return res.status(500).json({
 
-                    }
+                message:
+                "Session Error"
+
+            });
+
+        }
+
+        res.json({
+
+            success:true,
+
+            message:
+            "Premium Activated"
+
+        });
+
+    });
+
+}
 
                 );
 
