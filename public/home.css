@@ -1015,7 +1015,7 @@ repeat(auto-fill,minmax(260px,1fr));
 
     display:grid;
 
-    grid-template-columns:repeat(4,auto);
+    grid-template-columns:repeat(8,auto);
 
     justify-content:end;
 
