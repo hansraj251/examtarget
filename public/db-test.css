@@ -233,3 +233,24 @@ body{
     color:#dc2626;
 
 }
+@media (min-width:768px) and (max-width:1180px){
+
+    .exam-buttons{
+
+        display:grid;
+
+        grid-template-columns:repeat(2,1fr);
+
+        gap:10px;
+
+    }
+
+    .exam-btn{
+
+        width:100% !important;
+
+        min-height:22px;
+
+    }
+
+}

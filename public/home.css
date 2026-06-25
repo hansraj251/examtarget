@@ -834,7 +834,7 @@ repeat(auto-fill,minmax(260px,1fr));
 
 .exam-btn{
 
-    padding:10px 15px;
+    padding:4px 6px;
 
     border:none;
 
@@ -846,7 +846,7 @@ repeat(auto-fill,minmax(260px,1fr));
 
     color:white;
 
-    font-weight:600;
+    font-weight:400;
 
     transition:0.3s;
     margin-top:15px;
@@ -1015,11 +1015,11 @@ repeat(auto-fill,minmax(260px,1fr));
 
     display:grid;
 
-    grid-template-columns:repeat(7,auto);
+    grid-template-columns:repeat(4,auto);
 
     justify-content:end;
 
-    gap:8px;
+    gap:6px;
 
 }
 
@@ -3010,5 +3010,43 @@ repeat(auto-fill,minmax(260px,1fr));
         grid-template-columns:1fr;
 
     }
+
+}
+.exam-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:36px;
+
+    padding:6px 8px;
+
+    line-height:1;
+
+    text-align:center;
+
+    box-sizing:border-box;
+
+}
+.exam-btn{
+
+    height:auto;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:0 8px;
+
+    line-height:1;
+
+    text-align:center;
+
+    box-sizing:border-box;
 
 }
